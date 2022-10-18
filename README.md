@@ -26,9 +26,9 @@ Example:
 aws dynamodb scan --endpoint-url http://localhost:8010 --table-name users > ./tables/users.json
 ```
 
-### Table import
+### Tables import
 
-Command to import the previously exported JSON file. At the moment the file is configured to import users table from tables folder
+To import JSON files from tables folder use the command:
 
 ```
 node import.js
