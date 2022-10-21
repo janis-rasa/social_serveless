@@ -1,0 +1,38 @@
+{
+	"TableName": "social_posts",
+	"KeySchema": [
+		{ "AttributeName": "postId", "KeyType": "HASH" },
+		{ "AttributeName": "title", "KeyType": "RANGE" }
+	],
+	"AttributeDefinitions": [
+		{ "AttributeName": "postId", "AttributeType": "N" },
+		{ "AttributeName": "title", "AttributeType": "S" },
+		{ "AttributeName": "timestamp", "AttributeType": "N" }
+	],
+	"ProvisionedThroughput": {
+		"ReadCapacityUnits": 5,
+		"WriteCapacityUnits": 5
+	},
+	"GlobalSecondaryIndexes": [
+		{
+			"IndexName": "timestampIndex",
+			"KeySchema": [
+				{
+					"AttributeName": "postId",
+					"KeyType": "HASH"
+				},
+				{
+					"AttributeName": "timestamp",
+					"KeyType": "RANGE"
+				}
+			],
+			"Projection": {
+				"ProjectionType": "ALL"
+			},
+			"ProvisionedThroughput": {
+				"ReadCapacityUnits": 5,
+				"WriteCapacityUnits": 5
+			}
+		}
+	]
+}

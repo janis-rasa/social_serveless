@@ -9,6 +9,7 @@
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
+		"serverless-functions-base-path": "^1.0.32",
 		"serverless-offline": "^11.1.2"
 	},
 	"dependencies": {

@@ -1,0 +1,15 @@
+{
+	"TableName": "social_messages",
+	"KeySchema": [
+		{ "AttributeName": "messageId", "KeyType": "HASH" },
+		{ "AttributeName": "timestamp", "KeyType": "RANGE" }
+	],
+	"AttributeDefinitions": [
+		{ "AttributeName": "messageId", "AttributeType": "N" },
+		{ "AttributeName": "timestamp", "AttributeType": "N" }
+	],
+	"ProvisionedThroughput": {
+		"ReadCapacityUnits": 3,
+		"WriteCapacityUnits": 3
+	}
+}

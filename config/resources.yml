@@ -1,0 +1,15 @@
+# CloudFormation template syntax
+Resources:
+  socialUsers:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: social_users
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: N
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3

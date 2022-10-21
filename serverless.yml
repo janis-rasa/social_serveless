@@ -1,6 +1,7 @@
 plugins:
   - serverless-dynamodb-local
   - serverless-offline
+  - serverless-functions-base-path
 
 org: janisrasins
 app: social-serveless
@@ -27,10 +28,10 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "arn:aws:dynamodb:eu-central-1:*:*"
-  environment:
-    TABLE_USERS: users
+  environment: ${file(./config/environment.yml)}
 
 custom:
+  functionsBasePath: handlers
   serverless-offline:
     httpsProtocol: "keys"
     httpPort: 4000
@@ -47,51 +48,6 @@ custom:
       convertEmptyValues: true
       noStart: true
 
-functions:
-  hello-world:
-    handler: handler.handle # required, handler set in AWS Lambda
-    name: "${self:service}-${self:provider.stage}" # optional, Deployed Lambda name
-    description: "slspress offline example"
-    events:
-      - http:
-          path: hello-world
-          method: get
-          cors: true
-  createUser:
-    handler: handler.createUser
-    events:
-      - http:
-          path: users
-          method: POST
-  getUsers:
-    handler: handler.listUsers
-    events:
-      - http:
-          path: users
-          method: GET
-  deleteUser:
-    handler: handler.deleteUser
-    events:
-      - http:
-          path: users/:userId
-          method: DELETE
-          request:
-            parameters:
-              paths:
-                name: true
+functions: ${file(./config/functions.yml)}
 
-resources: # CloudFormation template syntax
-  Resources:
-    socialUsers:
-      Type: AWS::DynamoDB::Table
-      Properties:
-        TableName: users
-        AttributeDefinitions:
-          - AttributeName: userId
-            AttributeType: N
-        KeySchema:
-          - AttributeName: userId
-            KeyType: HASH
-        ProvisionedThroughput:
-          ReadCapacityUnits: 3
-          WriteCapacityUnits: 3
+resources: ${file(./config/resources.yml)} # CloudFormation template syntax

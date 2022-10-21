@@ -5,9 +5,10 @@ const AWS = require("aws-sdk")
 
 // --- start user config ---
 
-const DYNAMODB_TABLE_NAMES = ["posts", "messages", "users"]
+const DYNAMODB_TABLE_NAMES = ["social_posts", "social_messages", "social_users"]
 const DYNAMODB_REGION = "eu-central-1"
 const DYNAMODB_ENDPOINT = "http://localhost:8010"
+const PATH_TO_JSON_FILES = "./tables/"
 
 // Set options
 AWS.config.update({ region: DYNAMODB_REGION, endpoint: DYNAMODB_ENDPOINT })
@@ -56,7 +57,7 @@ const importData = (tableName, itemData, callback) => {
 	})
 
 	ddb.batchWriteItem(params, function (err, res, cap) {
-		console.log("Done going next...\n")
+		console.log("Done, going next...\n")
 		if (err == null) {
 			console.log("Success chunk #" + chunkNo + "\n")
 			dataImported = true
@@ -71,7 +72,7 @@ const importData = (tableName, itemData, callback) => {
 }
 
 DYNAMODB_TABLE_NAMES.forEach((element) => {
-	const jsonFilename = "./tables/" + element + ".json"
+	const jsonFilename = PATH_TO_JSON_FILES + element + ".json"
 	const jsonData = JSON.parse(fs.readFileSync(jsonFilename))
 	parser(jsonData, element)
 })
