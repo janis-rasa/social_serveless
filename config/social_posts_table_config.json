@@ -1,13 +1,11 @@
 {
 	"TableName": "social_posts",
-	"KeySchema": [
-		{ "AttributeName": "postId", "KeyType": "HASH" },
-		{ "AttributeName": "title", "KeyType": "RANGE" }
-	],
+	"KeySchema": [{ "AttributeName": "postId", "KeyType": "HASH" }],
 	"AttributeDefinitions": [
 		{ "AttributeName": "postId", "AttributeType": "N" },
-		{ "AttributeName": "title", "AttributeType": "S" },
-		{ "AttributeName": "timestamp", "AttributeType": "N" }
+		{ "AttributeName": "userId", "AttributeType": "N" },
+		{ "AttributeName": "timestamp", "AttributeType": "N" },
+		{ "AttributeName": "isActive", "AttributeType": "N" }
 	],
 	"ProvisionedThroughput": {
 		"ReadCapacityUnits": 5,
@@ -15,10 +13,24 @@
 	},
 	"GlobalSecondaryIndexes": [
 		{
-			"IndexName": "timestampIndex",
+			"IndexName": "userIndex",
+			"KeySchema": [
+				{ "AttributeName": "userId", "KeyType": "HASH" },
+				{ "AttributeName": "timestamp", "KeyType": "RANGE" }
+			],
+			"Projection": {
+				"ProjectionType": "ALL"
+			},
+			"ProvisionedThroughput": {
+				"ReadCapacityUnits": 5,
+				"WriteCapacityUnits": 5
+			}
+		},
+		{
+			"IndexName": "isActiveIndex",
 			"KeySchema": [
 				{
-					"AttributeName": "postId",
+					"AttributeName": "isActive",
 					"KeyType": "HASH"
 				},
 				{

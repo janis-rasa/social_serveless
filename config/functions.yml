@@ -25,3 +25,21 @@ deleteUser:
     - http:
         path: users
         method: DELETE
+getPosts:
+  handler: posts.getPosts
+  events:
+    - http:
+        path: posts
+        method: GET
+createPost:
+  handler: posts.createPost
+  events:
+    - http:
+        path: posts/create
+        method: POST
+getMessages:
+  handler: messages.getMessages
+  events:
+    - http:
+        path: messages
+        method: GET

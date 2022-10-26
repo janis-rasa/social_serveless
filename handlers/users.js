@@ -1,12 +1,12 @@
 "use strict"
 const { DynamoDB } = require("aws-sdk")
 
-const db = new DynamoDB.DocumentClient({
+const documentClient = new DynamoDB.DocumentClient({
 	region: process.env.SERVERLESS_REGION,
 	endpoint: process.env.SERVERLESS_ENDPOINT,
 })
 
-const usersTable = process.env.SERVERLESS_TABLE_SOCIAL_USERS
+const tableName = process.env.SERVERLESS_TABLE_SOCIAL_USERS
 
 // Create user
 module.exports.createUser = async (event) => {
@@ -19,31 +19,49 @@ module.exports.createUser = async (event) => {
 	}
 
 	const params = {
-		TableName: usersTable,
+		TableName: tableName,
 		Item: newUser,
 	}
 
-	await db.put(params).promise()
+	await documentClient.put(params).promise()
 
 	return { statusCode: 200, body: JSON.stringify(newUser) }
 }
 
 // Get users
 module.exports.getUsers = async (event) => {
-	const params = {
-		TableName: usersTable,
+	let params = {
+		TableName: tableName,
 		KeyConditionExpression: "isActive = :isActive",
 		ExpressionAttributeValues: { ":isActive": 1 },
 		ScanIndexForward: true,
 		IndexName: "isActiveIndex",
 	}
 	if (event.queryStringParameters !== null) {
-		let LastEvaluatedKey = event.queryStringParameters.LastEvaluatedKey
-		params.ExclusiveStartKey = LastEvaluatedKey ? JSON.parse(LastEvaluatedKey) : undefined
-		params.Limit = event.queryStringParameters.limit
+		switch (true) {
+			case !!event.queryStringParameters.limit:
+				let LastEvaluatedKey = event.queryStringParameters.LastEvaluatedKey
+				params.ExclusiveStartKey = LastEvaluatedKey ? JSON.parse(LastEvaluatedKey) : undefined
+				params.Limit = event.queryStringParameters.limit
+				break
+			case !!event.queryStringParameters.userId:
+				params.KeyConditionExpression = "userId = :userId"
+				params.ExpressionAttributeValues = { ":userId": Number(event.queryStringParameters.userId) }
+				params.IndexName = undefined
+				break
+			case !!event.queryStringParameters.userName:
+				params.KeyConditionExpression = "userName = :userName"
+				params.ExpressionAttributeValues = { ":userName": event.queryStringParameters.userName }
+				params.IndexName = "userNameIndex"
+				break
+			case !!event.queryStringParameters.info:
+				params.Select = "COUNT"
+				break
+			default:
+		}
 	}
 
-	const users = await db.query(params).promise()
+	const users = await documentClient.query(params).promise()
 
 	return { statusCode: 200, body: JSON.stringify(users) }
 }
@@ -52,13 +70,13 @@ module.exports.getUsers = async (event) => {
 module.exports.deleteUser = async (event) => {
 	const userToBeRemovedId = event.queryStringParameters.userId
 	const params = {
-		TableName: usersTable,
+		TableName: tableName,
 		Key: {
 			userId: userToBeRemovedId,
 		},
 	}
 
-	await db.delete(params).promise()
+	await documentClient.delete(params).promise()
 
 	return { statusCode: 200 }
 }

@@ -1,24 +1,11 @@
 {
 	"TableName": "social_users",
-	"KeySchema": [
-		{
-			"AttributeName": "userId",
-			"KeyType": "HASH"
-		}
-	],
+	"KeySchema": [{ "AttributeName": "userId", "KeyType": "HASH" }],
 	"AttributeDefinitions": [
-		{
-			"AttributeName": "userId",
-			"AttributeType": "N"
-		},
-		{
-			"AttributeName": "isActive",
-			"AttributeType": "N"
-		},
-		{
-			"AttributeName": "firstName",
-			"AttributeType": "S"
-		}
+		{ "AttributeName": "userId", "AttributeType": "N" },
+		{ "AttributeName": "isActive", "AttributeType": "N" },
+		{ "AttributeName": "firstName", "AttributeType": "S" },
+		{ "AttributeName": "userName", "AttributeType": "S" }
 	],
 	"ProvisionedThroughput": {
 		"ReadCapacityUnits": 5,
@@ -30,6 +17,26 @@
 			"KeySchema": [
 				{
 					"AttributeName": "isActive",
+					"KeyType": "HASH"
+				},
+				{
+					"AttributeName": "firstName",
+					"KeyType": "RANGE"
+				}
+			],
+			"Projection": {
+				"ProjectionType": "ALL"
+			},
+			"ProvisionedThroughput": {
+				"ReadCapacityUnits": 5,
+				"WriteCapacityUnits": 5
+			}
+		},
+		{
+			"IndexName": "userNameIndex",
+			"KeySchema": [
+				{
+					"AttributeName": "userName",
 					"KeyType": "HASH"
 				},
 				{

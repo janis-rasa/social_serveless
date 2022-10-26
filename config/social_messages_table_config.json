@@ -1,15 +1,32 @@
 {
 	"TableName": "social_messages",
 	"KeySchema": [
-		{ "AttributeName": "messageId", "KeyType": "HASH" },
+		{ "AttributeName": "userId", "KeyType": "HASH" },
 		{ "AttributeName": "timestamp", "KeyType": "RANGE" }
 	],
 	"AttributeDefinitions": [
-		{ "AttributeName": "messageId", "AttributeType": "N" },
-		{ "AttributeName": "timestamp", "AttributeType": "N" }
+		{ "AttributeName": "timestamp", "AttributeType": "N" },
+		{ "AttributeName": "targetUserId", "AttributeType": "N" },
+		{ "AttributeName": "userId", "AttributeType": "N" }
 	],
 	"ProvisionedThroughput": {
-		"ReadCapacityUnits": 3,
-		"WriteCapacityUnits": 3
-	}
+		"ReadCapacityUnits": 5,
+		"WriteCapacityUnits": 5
+	},
+	"GlobalSecondaryIndexes": [
+		{
+			"IndexName": "usersIndex",
+			"KeySchema": [
+				{ "AttributeName": "targetUserId", "KeyType": "HASH" },
+				{ "AttributeName": "timestamp", "KeyType": "RANGE" }
+			],
+			"Projection": {
+				"ProjectionType": "ALL"
+			},
+			"ProvisionedThroughput": {
+				"ReadCapacityUnits": 5,
+				"WriteCapacityUnits": 5
+			}
+		}
+	]
 }

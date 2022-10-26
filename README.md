@@ -34,10 +34,12 @@ To export selected table
 aws dynamodb scan --endpoint-url http://localhost:8010 --table-name TABLE_NAME > JSON_FILE
 ```
 
+where TABLE_NAME is source table name and JSON_FILE is target json file name
+
 Example:
 
 ```
-aws dynamodb scan --endpoint-url http://localhost:8010 --table-name users > ./tables/users.json
+aws dynamodb scan --endpoint-url http://localhost:8010 --table-name social_users > ./tables/social_users.json
 ```
 
 ### Tables import
