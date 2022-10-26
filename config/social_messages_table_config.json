@@ -1,13 +1,13 @@
 {
 	"TableName": "social_messages",
 	"KeySchema": [
-		{ "AttributeName": "userId", "KeyType": "HASH" },
-		{ "AttributeName": "timestamp", "KeyType": "RANGE" }
+		{ "AttributeName": "messageId", "KeyType": "HASH" },
+		{ "AttributeName": "unixTimestamp", "KeyType": "RANGE" }
 	],
 	"AttributeDefinitions": [
-		{ "AttributeName": "timestamp", "AttributeType": "N" },
-		{ "AttributeName": "targetUserId", "AttributeType": "N" },
-		{ "AttributeName": "userId", "AttributeType": "N" }
+		{ "AttributeName": "unixTimestamp", "AttributeType": "N" },
+		{ "AttributeName": "userId", "AttributeType": "N" },
+		{ "AttributeName": "messageId", "AttributeType": "N" }
 	],
 	"ProvisionedThroughput": {
 		"ReadCapacityUnits": 5,
@@ -17,8 +17,8 @@
 		{
 			"IndexName": "usersIndex",
 			"KeySchema": [
-				{ "AttributeName": "targetUserId", "KeyType": "HASH" },
-				{ "AttributeName": "timestamp", "KeyType": "RANGE" }
+				{ "AttributeName": "userId", "KeyType": "HASH" },
+				{ "AttributeName": "unixTimestamp", "KeyType": "RANGE" }
 			],
 			"Projection": {
 				"ProjectionType": "ALL"

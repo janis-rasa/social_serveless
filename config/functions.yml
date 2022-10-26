@@ -11,7 +11,7 @@ createUser:
   handler: users.createUser
   events:
     - http:
-        path: users
+        path: users/create
         method: POST
 getUsers:
   handler: users.getUsers
@@ -43,3 +43,9 @@ getMessages:
     - http:
         path: messages
         method: GET
+createPost:
+  handler: posts.createMessage
+  events:
+    - http:
+        path: messages/create
+        method: POST

@@ -4,7 +4,7 @@
 	"AttributeDefinitions": [
 		{ "AttributeName": "postId", "AttributeType": "N" },
 		{ "AttributeName": "userId", "AttributeType": "N" },
-		{ "AttributeName": "timestamp", "AttributeType": "N" },
+		{ "AttributeName": "unixTimestamp", "AttributeType": "N" },
 		{ "AttributeName": "isActive", "AttributeType": "N" }
 	],
 	"ProvisionedThroughput": {
@@ -16,7 +16,7 @@
 			"IndexName": "userIndex",
 			"KeySchema": [
 				{ "AttributeName": "userId", "KeyType": "HASH" },
-				{ "AttributeName": "timestamp", "KeyType": "RANGE" }
+				{ "AttributeName": "unixTimestamp", "KeyType": "RANGE" }
 			],
 			"Projection": {
 				"ProjectionType": "ALL"
@@ -34,7 +34,7 @@
 					"KeyType": "HASH"
 				},
 				{
-					"AttributeName": "timestamp",
+					"AttributeName": "unixTimestamp",
 					"KeyType": "RANGE"
 				}
 			],

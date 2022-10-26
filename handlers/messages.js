@@ -1,7 +1,7 @@
 "use strict"
 const { DynamoDB } = require("aws-sdk")
 
-const documentClient = new DynamoDB({
+const documentClient = new DynamoDB.DocumentClient({
 	region: process.env.SERVERLESS_REGION,
 	endpoint: process.env.SERVERLESS_ENDPOINT,
 })
@@ -16,17 +16,41 @@ module.exports.getMessages = async (event) => {
 		event.queryStringParameters.targetUserId
 	) {
 		let params = {
-			Statement:
-				"SELECT * FROM " +
-				tableName +
-				" WHERE userId=" +
-				event.queryStringParameters.userId +
-				" AND targetUserId=" +
-				event.queryStringParameters.targetUserId,
+			TableName: tableName,
+			ScanIndexForward: false,
+			KeyConditionExpression: "userId = :userId",
+			FilterExpression: "targetUserId=:targetUserId",
+			IndexName: "usersIndex",
+			ExpressionAttributeValues: {
+				":userId": Number(event.queryStringParameters.userId),
+				":targetUserId": Number(event.queryStringParameters.targetUserId),
+			},
 		}
-		const messages = await documentClient.executeStatement(params).promise()
-		return { statusCode: 200, body: JSON.stringify(messages) }
+		try {
+			const messages = await documentClient.query(params).promise()
+			return { statusCode: 200, body: JSON.stringify(messages) }
+		} catch (err) {
+			console.log(err)
+		}
 	} else {
 		return { statusCode: 200, body: JSON.stringify({ text: "OK" }) }
+	}
+}
+
+// Create new message
+module.exports.createMessage = async (event) => {
+	const newMessage = JSON.parse(event.body)
+	newMessage.messageId = Date.now()
+
+	const params = {
+		TableName: tableName,
+		Item: newMessage,
+	}
+
+	try {
+		await documentClient.put(params).promise()
+		return { body: JSON.stringify({ messageId: params.Item.messageId }) }
+	} catch (err) {
+		return { error: err }
 	}
 }

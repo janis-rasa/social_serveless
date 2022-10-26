@@ -39,6 +39,7 @@ module.exports.getPosts = async (event) => {
 // Create new post
 module.exports.createPost = async (event) => {
 	const newPost = JSON.parse(event.body)
+	newPost.postId = Date.now()
 
 	const params = {
 		TableName: tableName,
