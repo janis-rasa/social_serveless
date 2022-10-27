@@ -37,6 +37,12 @@ createPost:
     - http:
         path: posts/create
         method: POST
+deletePost:
+  handler: posts.deletePost
+  events:
+    - http:
+        path: posts
+        method: DELETE
 getMessages:
   handler: messages.getMessages
   events:

@@ -1,10 +1,6 @@
 "use strict"
-const { DynamoDB } = require("aws-sdk")
-
-const documentClient = new DynamoDB.DocumentClient({
-	region: process.env.SERVERLESS_REGION,
-	endpoint: process.env.SERVERLESS_ENDPOINT,
-})
+const { documentClient } = require("../utils/docClient")
+const { missingRequiredField } = require("../utils/responseMessages")
 
 const tableName = process.env.SERVERLESS_TABLE_SOCIAL_MESSAGES
 
@@ -54,10 +50,19 @@ module.exports.createMessage = async (event) => {
 		Item: newMessage,
 	}
 
+	if (
+		!newMessage.text ||
+		!newMessage.targetUserId ||
+		!newMessage.userId ||
+		!newMessage.unixTimestamp
+	) {
+		return { statusCode: 400, body: missingRequiredField }
+	}
+
 	try {
 		await documentClient.put(params).promise()
 		return { body: JSON.stringify({ messageId: params.Item.messageId }) }
 	} catch (err) {
-		return { error: err }
+		return { statusCode: 400, body: JSON.stringify({ message: err }) }
 	}
 }

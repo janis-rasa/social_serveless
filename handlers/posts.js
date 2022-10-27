@@ -1,10 +1,6 @@
 "use strict"
-const { DynamoDB } = require("aws-sdk")
-
-const documentClient = new DynamoDB.DocumentClient({
-	region: process.env.SERVERLESS_REGION,
-	endpoint: process.env.SERVERLESS_ENDPOINT,
-})
+const { documentClient } = require("../utils/docClient")
+const { missingRequiredField } = require("../utils/responseMessages")
 
 const tableName = process.env.SERVERLESS_TABLE_SOCIAL_POSTS
 
@@ -46,10 +42,34 @@ module.exports.createPost = async (event) => {
 		Item: newPost,
 	}
 
+	if (
+		!newPost.title ||
+		!newPost.text ||
+		!newPost.userId ||
+		!newPost.imageUrl ||
+		!newPost.unixTimestamp
+	) {
+		return { statusCode: 400, body: missingRequiredField }
+	}
+
 	try {
 		await documentClient.put(params).promise()
 		return { body: JSON.stringify({ postId: params.Item.postId }) }
 	} catch (err) {
-		return { error: err }
+		return { statusCode: 400, body: JSON.stringify({ errorMessage: err }) }
 	}
+}
+
+// Delete post
+module.exports.deletePost = async (event) => {
+	const params = {
+		TableName: tableName,
+		Key: {
+			postId: event.queryStringParameters.postId,
+		},
+	}
+
+	await documentClient.delete(params).promise()
+
+	return { statusCode: 200 }
 }

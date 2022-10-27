@@ -1,21 +1,23 @@
 "use strict"
-const { DynamoDB } = require("aws-sdk")
-
-const documentClient = new DynamoDB.DocumentClient({
-	region: process.env.SERVERLESS_REGION,
-	endpoint: process.env.SERVERLESS_ENDPOINT,
-})
+const { documentClient } = require("../utils/docClient")
+const { missingRequiredField } = require("../utils/responseMessages")
 
 const tableName = process.env.SERVERLESS_TABLE_SOCIAL_USERS
 
 // Create user
 module.exports.createUser = async (event) => {
-	const newUser = {
-		firstName: event.body.firstName,
-		lastName: event.body.lastName,
-		email: event.body.email,
-		avatarUrl: event.body.avatarUrl,
-		userName: event.body.userName,
+	const newUser = JSON.parse(event.body)
+	newUser.userId = Date.now()
+	newUser.isActive = 1
+
+	if (
+		!newUser.firstName ||
+		!newUser.lastName ||
+		!newUser.avatarUrl ||
+		!newUser.userName ||
+		!newUser.email
+	) {
+		return { statusCode: 400, body: missingRequiredField }
 	}
 
 	const params = {
@@ -23,9 +25,12 @@ module.exports.createUser = async (event) => {
 		Item: newUser,
 	}
 
-	await documentClient.put(params).promise()
-
-	return { statusCode: 200, body: JSON.stringify(newUser) }
+	try {
+		await documentClient.put(params).promise()
+		return { statusCode: 200, body: JSON.stringify(newUser) }
+	} catch (err) {
+		return { statusCode: 400, body: JSON.stringify({ errorMessage: err }) }
+	}
 }
 
 // Get users
@@ -68,15 +73,14 @@ module.exports.getUsers = async (event) => {
 
 // Delete user
 module.exports.deleteUser = async (event) => {
-	const userToBeRemovedId = event.queryStringParameters.userId
 	const params = {
 		TableName: tableName,
 		Key: {
-			userId: userToBeRemovedId,
+			userId: event.queryStringParameters.userId,
 		},
 	}
 
 	await documentClient.delete(params).promise()
 
-	return { statusCode: 200 }
+	return { statusCode: 200, body: { userId: event.queryStringParameters.userId } }
 }
