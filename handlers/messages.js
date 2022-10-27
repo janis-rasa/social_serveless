@@ -10,30 +10,37 @@ const tableName = process.env.SERVERLESS_TABLE_SOCIAL_MESSAGES
 
 // Get posts
 module.exports.getMessages = async (event) => {
-	if (
-		event.queryStringParameters !== null &&
-		event.queryStringParameters.userId &&
-		event.queryStringParameters.targetUserId
-	) {
-		let params = {
-			TableName: tableName,
-			ScanIndexForward: false,
-			KeyConditionExpression: "userId = :userId",
-			FilterExpression: "targetUserId=:targetUserId",
-			IndexName: "usersIndex",
-			ExpressionAttributeValues: {
-				":userId": Number(event.queryStringParameters.userId),
-				":targetUserId": Number(event.queryStringParameters.targetUserId),
-			},
+	let params = {
+		TableName: tableName,
+		ScanIndexForward: false,
+	}
+	if (event.queryStringParameters !== null)
+		switch (true) {
+			case !!event.queryStringParameters.userId && !!event.queryStringParameters.targetUserId:
+				params.KeyConditionExpression = "userId = :userId and targetUserId=:targetUserId"
+				params.IndexName = "usersIndex"
+				params.ExpressionAttributeValues = {
+					":userId": Number(event.queryStringParameters.userId),
+					":targetUserId": Number(event.queryStringParameters.targetUserId),
+				}
+				break
+			case !!event.queryStringParameters.userId && !!event.queryStringParameters.messageId:
+				params.KeyConditionExpression = "userId = :userId and messageId=:messageId"
+				params.IndexName = "usersAndMessageIndex"
+				params.ExpressionAttributeValues = {
+					":userId": Number(event.queryStringParameters.userId),
+					":messageId": Number(event.queryStringParameters.messageId),
+				}
+				break
+			default:
+				return { statusCode: 200, body: JSON.stringify({ text: "OK" }) }
 		}
-		try {
-			const messages = await documentClient.query(params).promise()
-			return { statusCode: 200, body: JSON.stringify(messages) }
-		} catch (err) {
-			console.log(err)
-		}
-	} else {
-		return { statusCode: 200, body: JSON.stringify({ text: "OK" }) }
+
+	try {
+		const messages = await documentClient.query(params).promise()
+		return { statusCode: 200, body: JSON.stringify(messages) }
+	} catch (err) {
+		console.log(err)
 	}
 }
 

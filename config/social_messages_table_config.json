@@ -7,6 +7,7 @@
 	"AttributeDefinitions": [
 		{ "AttributeName": "unixTimestamp", "AttributeType": "N" },
 		{ "AttributeName": "userId", "AttributeType": "N" },
+		{ "AttributeName": "targetUserId", "AttributeType": "N" },
 		{ "AttributeName": "messageId", "AttributeType": "N" }
 	],
 	"ProvisionedThroughput": {
@@ -18,7 +19,21 @@
 			"IndexName": "usersIndex",
 			"KeySchema": [
 				{ "AttributeName": "userId", "KeyType": "HASH" },
-				{ "AttributeName": "unixTimestamp", "KeyType": "RANGE" }
+				{ "AttributeName": "targetUserId", "KeyType": "RANGE" }
+			],
+			"Projection": {
+				"ProjectionType": "ALL"
+			},
+			"ProvisionedThroughput": {
+				"ReadCapacityUnits": 5,
+				"WriteCapacityUnits": 5
+			}
+		},
+		{
+			"IndexName": "usersAndMessageIndex",
+			"KeySchema": [
+				{ "AttributeName": "userId", "KeyType": "HASH" },
+				{ "AttributeName": "messageId", "KeyType": "RANGE" }
 			],
 			"Projection": {
 				"ProjectionType": "ALL"

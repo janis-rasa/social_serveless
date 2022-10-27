@@ -50,16 +50,26 @@ To import JSON files from tables folder use the command:
 node ./utils/importTables.js
 ```
 
-## API calls
+## Routes
 
-Default endpoint: `http://localhost:8010`
+Default endpoint: `http://localhost:8010/`
 
 Default stage: `dev`
 
+Example: `http://localhost:8010/dev/posts`
+
 ### Messages
+
+Get messages by users
 
 ```
 GET  /messages?userId=1&targetUserId=2
+```
+
+Get one user message
+
+```
+GET  /messages?userId=1&messageId=38
 ```
 
 Create new message use POST method with `"Content-Type": "application/json"`
@@ -71,6 +81,8 @@ POST /messages/create
 Return messageId
 
 ### Posts
+
+Get posts or posts by user
 
 ```
 GET  /posts
@@ -87,31 +99,33 @@ Return postId
 
 ### Users
 
+Get all active users
+
 ```
 GET /users
 ```
 
-Get all active users
+Get user by Id or by Username
 
 ```
 GET /users?userId=1
 GET /users?userName=Jermaine1
 ```
 
-Get user by Id or by Username
+Get users count
 
 ```
 GET /users?info=1
 
 ```
 
-Get users count
+Get first 10 users.
 
 ```
 GET /users?limit=10
 ```
 
-Get first 10 users. To get next 10 users you must include urlEncoded LastEvaluatedKey that came in the previous response.
+To get next 10 users you must include urlEncoded LastEvaluatedKey that came in the previous response.
 
 ```
 GET /users?limit=10&LastEvaluatedKey=%7B%22isActive%22%3A1%2C%22firstName%22%3A%22Carla%22%2C%22userId%22%3A19%7D

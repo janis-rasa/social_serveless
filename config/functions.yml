@@ -43,7 +43,7 @@ getMessages:
     - http:
         path: messages
         method: GET
-createPost:
+createMessages:
   handler: posts.createMessage
   events:
     - http:
