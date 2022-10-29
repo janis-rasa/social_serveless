@@ -99,6 +99,12 @@ Return postId
 
 To delete post, use DELETE method with this JSON in the body `{ postId: postId, unixTimestamp: unixTimestamp }`
 
+```
+DELETE /posts
+```
+
+Return postId
+
 ### Users
 
 Get all active users
