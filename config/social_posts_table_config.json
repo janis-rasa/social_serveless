@@ -1,6 +1,9 @@
 {
 	"TableName": "social_posts",
-	"KeySchema": [{ "AttributeName": "postId", "KeyType": "HASH" }],
+	"KeySchema": [
+		{ "AttributeName": "postId", "KeyType": "HASH" },
+		{ "AttributeName": "unixTimestamp", "KeyType": "RANGE" }
+	],
 	"AttributeDefinitions": [
 		{ "AttributeName": "postId", "AttributeType": "N" },
 		{ "AttributeName": "userId", "AttributeType": "N" },

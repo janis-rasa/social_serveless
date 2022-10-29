@@ -20,6 +20,13 @@ module.exports.getPosts = async (event) => {
 				params.ExpressionAttributeValues = { ":userId": Number(event.queryStringParameters.userId) }
 				params.KeyConditionExpression = "userId = :userId"
 				params.IndexName = "userIndex"
+				if (!!event.queryStringParameters.postId) {
+					params.FilterExpression = "postId = :postId"
+					params.ExpressionAttributeValues = {
+						...params.ExpressionAttributeValues,
+						":postId": Number(event.queryStringParameters.postId),
+					}
+				}
 				break
 			case !!event.queryStringParameters.info:
 				params.Select = "COUNT"
@@ -35,7 +42,7 @@ module.exports.getPosts = async (event) => {
 // Create new post
 module.exports.createPost = async (event) => {
 	const newPost = JSON.parse(event.body)
-	newPost.postId = Date.now()
+	newPost.postId ? newPost.postId : (newPost.postId = Date.now())
 
 	const params = {
 		TableName: tableName,
@@ -62,14 +69,20 @@ module.exports.createPost = async (event) => {
 
 // Delete post
 module.exports.deletePost = async (event) => {
+	const postParams = JSON.parse(event.body)
 	const params = {
 		TableName: tableName,
 		Key: {
-			postId: event.queryStringParameters.postId,
+			postId: postParams.postId,
+			unixTimestamp: postParams.unixTimestamp,
 		},
 	}
 
-	await documentClient.delete(params).promise()
-
-	return { statusCode: 200 }
+	console.log(params)
+	try {
+		await documentClient.delete(params).promise()
+		return { statusCode: 200, body: JSON.stringify({ postId: postParams.postId }) }
+	} catch (err) {
+		return { statusCode: 400, body: JSON.stringify({ errorMessage: err }) }
+	}
 }

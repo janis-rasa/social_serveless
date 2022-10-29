@@ -89,13 +89,15 @@ GET  /posts
 GET  /posts?userId=1
 ```
 
-Create new post use POST method with `"Content-Type": "application/json"`
+To create or update post use POST method with `"Content-Type": "application/json"`. If there is a postId, then the post will be updated.
 
 ```
 POST /posts/create
 ```
 
 Return postId
+
+To delete post, use DELETE method with this JSON in the body `{ postId: postId, unixTimestamp: unixTimestamp }`
 
 ### Users
 

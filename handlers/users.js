@@ -76,11 +76,11 @@ module.exports.deleteUser = async (event) => {
 	const params = {
 		TableName: tableName,
 		Key: {
-			userId: event.queryStringParameters.userId,
+			userId: event.body.userId,
 		},
 	}
 
 	await documentClient.delete(params).promise()
 
-	return { statusCode: 200, body: { userId: event.queryStringParameters.userId } }
+	return { statusCode: 200, body: { userId: event.body.userId } }
 }
