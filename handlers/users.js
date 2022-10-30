@@ -1,6 +1,6 @@
 "use strict"
-const { documentClient } = require("../utils/docClient")
-const { missingRequiredField } = require("../utils/responseMessages")
+const { runDynamoDb } = require("./libs/runDynamoDb")
+const { missingRequiredField } = require("./libs/responseMessages")
 
 const tableName = process.env.SERVERLESS_TABLE_SOCIAL_USERS
 
@@ -25,16 +25,11 @@ module.exports.createUser = async (event) => {
 		Item: newUser,
 	}
 
-	try {
-		await documentClient.put(params).promise()
-		return { statusCode: 200, body: JSON.stringify(newUser) }
-	} catch (err) {
-		return { statusCode: 400, body: JSON.stringify({ errorMessage: err }) }
-	}
+	return runDynamoDb("put", params, newUser)
 }
 
 // Get users
-module.exports.getUsers = async (event) => {
+module.exports.getUsers = (event) => {
 	let params = {
 		TableName: tableName,
 		KeyConditionExpression: "isActive = :isActive",
@@ -66,13 +61,11 @@ module.exports.getUsers = async (event) => {
 		}
 	}
 
-	const users = await documentClient.query(params).promise()
-
-	return { statusCode: 200, body: JSON.stringify(users) }
+	return runDynamoDb("query", params)
 }
 
 // Delete user
-module.exports.deleteUser = async (event) => {
+module.exports.deleteUser = (event) => {
 	const params = {
 		TableName: tableName,
 		Key: {
@@ -80,7 +73,5 @@ module.exports.deleteUser = async (event) => {
 		},
 	}
 
-	await documentClient.delete(params).promise()
-
-	return { statusCode: 200, body: { userId: event.body.userId } }
+	return runDynamoDb("delete", params, { userId: event.body.userId })
 }

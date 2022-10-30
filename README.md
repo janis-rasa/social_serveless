@@ -50,6 +50,10 @@ To import JSON files from tables folder use the command:
 node ./utils/importTables.js
 ```
 
+## HTTPS
+
+To be able to authorize on the framework, you need a [trusted certificate authority (CA)](https://en.wikipedia.org/wiki/Certificate_authority). In this project, [mkcert](https://github.com/FiloSottile/mkcert) was used to generate the certificate. How to do this is described in detail [here](https://web.dev/how-to-use-local-https/).
+
 ## Routes
 
 Default endpoint: `http://localhost:8010/`

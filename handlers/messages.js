@@ -1,6 +1,6 @@
 "use strict"
-const { documentClient } = require("../utils/docClient")
-const { missingRequiredField } = require("../utils/responseMessages")
+const { runDynamoDb } = require("./libs/runDynamoDb")
+const { missingRequiredField } = require("./libs/responseMessages")
 
 const tableName = process.env.SERVERLESS_TABLE_SOCIAL_MESSAGES
 
@@ -10,7 +10,7 @@ module.exports.getMessages = async (event) => {
 		TableName: tableName,
 		ScanIndexForward: false,
 	}
-	if (event.queryStringParameters !== null)
+	if (event.queryStringParameters !== null) {
 		switch (true) {
 			case !!event.queryStringParameters.userId && !!event.queryStringParameters.targetUserId:
 				params.KeyConditionExpression = "userId = :userId and targetUserId=:targetUserId"
@@ -31,13 +31,8 @@ module.exports.getMessages = async (event) => {
 			default:
 				return { statusCode: 200, body: JSON.stringify({ text: "OK" }) }
 		}
-
-	try {
-		const messages = await documentClient.query(params).promise()
-		return { statusCode: 200, body: JSON.stringify(messages) }
-	} catch (err) {
-		console.log(err)
 	}
+	return runDynamoDb("query", params)
 }
 
 // Create new message
@@ -59,10 +54,5 @@ module.exports.createMessage = async (event) => {
 		return { statusCode: 400, body: missingRequiredField }
 	}
 
-	try {
-		await documentClient.put(params).promise()
-		return { body: JSON.stringify({ messageId: params.Item.messageId }) }
-	} catch (err) {
-		return { statusCode: 400, body: JSON.stringify({ message: err }) }
-	}
+	return runDynamoDb("put", params, { messageId: params.Item.messageId })
 }

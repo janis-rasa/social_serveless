@@ -1,6 +1,6 @@
 "use strict"
-const { documentClient } = require("../utils/docClient")
-const { missingRequiredField } = require("../utils/responseMessages")
+const { runDynamoDb } = require("./libs/runDynamoDb")
+const { missingRequiredField } = require("./libs/responseMessages")
 
 const tableName = process.env.SERVERLESS_TABLE_SOCIAL_POSTS
 
@@ -35,14 +35,15 @@ module.exports.getPosts = async (event) => {
 		}
 	}
 
-	const posts = await documentClient.query(params).promise()
-	return { statusCode: 200, body: JSON.stringify(posts) }
+	return runDynamoDb("query", params)
 }
 
 // Create new post
 module.exports.createPost = async (event) => {
 	const newPost = JSON.parse(event.body)
-	newPost.postId ? newPost.postId : (newPost.postId = Date.now())
+	if (!newPost.postId) {
+		newPost.postId = Date.now()
+	}
 
 	const params = {
 		TableName: tableName,
@@ -59,12 +60,7 @@ module.exports.createPost = async (event) => {
 		return { statusCode: 400, body: missingRequiredField }
 	}
 
-	try {
-		await documentClient.put(params).promise()
-		return { body: JSON.stringify({ postId: params.Item.postId }) }
-	} catch (err) {
-		return { statusCode: 400, body: JSON.stringify({ errorMessage: err }) }
-	}
+	return runDynamoDb("put", params, { postId: params.Item.postId })
 }
 
 // Delete post
@@ -78,11 +74,5 @@ module.exports.deletePost = async (event) => {
 		},
 	}
 
-	console.log(params)
-	try {
-		await documentClient.delete(params).promise()
-		return { statusCode: 200, body: JSON.stringify({ postId: postParams.postId }) }
-	} catch (err) {
-		return { statusCode: 400, body: JSON.stringify({ errorMessage: err }) }
-	}
+	return runDynamoDb("delete", params, { postId: postParams.postId })
 }
