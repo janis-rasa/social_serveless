@@ -1,8 +1,9 @@
 "use strict"
 import { runDynamoDb } from "./libs/runDynamoDb.js"
 import { missingRequiredField } from "./libs/responseMessages.js"
+import { checkAuth } from "./libs/cookies.js"
 
-const tableName = process.env.SERVERLESS_TABLE_SOCIAL_USERS
+const TABLE_NAME = process.env.SERVERLESS_TABLE_SOCIAL_USERS
 
 // Create user
 export const createUser = async (event) => {
@@ -15,23 +16,49 @@ export const createUser = async (event) => {
 		!newUser.lastName ||
 		!newUser.avatarUrl ||
 		!newUser.userName ||
-		!newUser.email
+		!newUser.email ||
+		!newUser.password
 	) {
 		return { statusCode: 400, body: missingRequiredField }
 	}
 
+	const authUserData = {
+		userId: newUser.userId,
+		password: newUser.password,
+		email: newUser.email,
+	}
+
+	delete newUser.password
+
 	const params = {
-		TableName: tableName,
+		TableName: TABLE_NAME,
 		Item: newUser,
 	}
 
-	return runDynamoDb("put", params, newUser)
+	const paramsAuth = {
+		TableName: process.env.SERVERLESS_TABLE_SOCIAL_AUTH,
+		Item: authUserData,
+	}
+
+	try {
+		return Promise.all([
+			runDynamoDb("put", paramsAuth, { success: true }),
+			runDynamoDb("put", params, newUser),
+		]).then((response) => response[1])
+	} catch (err) {
+		return { statusCode: 400, body: JSON.stringify({ error: err }) }
+	}
 }
 
 // Get users
-export const getUsers = (event) => {
+export const getUsers = async (event) => {
+	const status = checkAuth(event)
+	if (!status.userId) {
+		return status
+	}
+
 	let params = {
-		TableName: tableName,
+		TableName: TABLE_NAME,
 		KeyConditionExpression: "isActive = :isActive",
 		ExpressionAttributeValues: { ":isActive": 1 },
 		ScanIndexForward: true,
@@ -47,7 +74,7 @@ export const getUsers = (event) => {
 			case !!event.queryStringParameters.userId:
 				params.KeyConditionExpression = "userId = :userId"
 				params.ExpressionAttributeValues = { ":userId": Number(event.queryStringParameters.userId) }
-				params.IndexName = undefined
+				delete params.IndexName
 				break
 			case !!event.queryStringParameters.userName:
 				params.KeyConditionExpression = "userName = :userName"
@@ -65,13 +92,18 @@ export const getUsers = (event) => {
 }
 
 // Delete user
-export const deleteUser = (event) => {
+export const deleteUser = async (event) => {
+	const status = checkAuth(event)
+	if (!status.userId) {
+		return status
+	}
+
 	const params = {
-		TableName: tableName,
+		TableName: TABLE_NAME,
 		Key: {
-			userId: event.body.userId,
+			userId: status.userId,
 		},
 	}
 
-	return runDynamoDb("delete", params, { userId: event.body.userId })
+	return runDynamoDb("delete", params, { userId: status.userId })
 }

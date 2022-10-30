@@ -5,51 +5,67 @@ hello-world:
     - http:
         path: hello
         method: GET
+        cors: true
 createUser:
   handler: users.createUser
   events:
     - http:
         path: users/create
         method: POST
+        cors: true
 getUsers:
   handler: users.getUsers
   events:
     - http:
         path: users
         method: GET
+        cors: true
 deleteUser:
   handler: users.deleteUser
   events:
     - http:
         path: users
         method: DELETE
+        cors: true
 getPosts:
   handler: posts.getPosts
   events:
     - http:
         path: posts
         method: GET
+        cors: true
 createPost:
   handler: posts.createPost
   events:
     - http:
         path: posts/create
         method: POST
+        cors: true
 deletePost:
   handler: posts.deletePost
   events:
     - http:
         path: posts
         method: DELETE
+        cors: true
 getMessages:
   handler: messages.getMessages
   events:
     - http:
         path: messages
         method: GET
+        cors: true
 createMessage:
   handler: messages.createMessage
   events:
     - http:
         path: messages/create
         method: POST
+        cors: true
+login:
+  handler: auth.login
+  events:
+    - http:
+        path: login
+        method: POST
+        cors: true

@@ -1,30 +1,44 @@
 "use strict"
 import { runDynamoDb } from "./libs/runDynamoDb.js"
 import { missingRequiredField } from "./libs/responseMessages.js"
+import { checkAuth } from "./libs/cookies.js"
 
-const tableName = process.env.SERVERLESS_TABLE_SOCIAL_MESSAGES
+const TABLE_NAME = process.env.SERVERLESS_TABLE_SOCIAL_MESSAGES
 
 // Get posts
 export const getMessages = async (event) => {
+	const status = checkAuth(event)
+	if (!status.userId) {
+		return status
+	}
+
 	let params = {
-		TableName: tableName,
+		TableName: TABLE_NAME,
 		ScanIndexForward: false,
 	}
 	if (event.queryStringParameters !== null) {
 		switch (true) {
-			case !!event.queryStringParameters.userId && !!event.queryStringParameters.targetUserId:
+			case !!event.queryStringParameters.targetUserId:
+				params.KeyConditionExpression = "userId = :userId and targetUserId=:targetUserId"
+				params.IndexName = "usersIndex"
+				params.ExpressionAttributeValues = {
+					":userId": status.userId,
+					":targetUserId": Number(event.queryStringParameters.targetUserId),
+				}
+				break
+			case !!event.queryStringParameters.userId:
 				params.KeyConditionExpression = "userId = :userId and targetUserId=:targetUserId"
 				params.IndexName = "usersIndex"
 				params.ExpressionAttributeValues = {
 					":userId": Number(event.queryStringParameters.userId),
-					":targetUserId": Number(event.queryStringParameters.targetUserId),
+					":targetUserId": status.userId,
 				}
 				break
-			case !!event.queryStringParameters.userId && !!event.queryStringParameters.messageId:
+			case !!event.queryStringParameters.messageId:
 				params.KeyConditionExpression = "userId = :userId and messageId=:messageId"
 				params.IndexName = "usersAndMessageIndex"
 				params.ExpressionAttributeValues = {
-					":userId": Number(event.queryStringParameters.userId),
+					":userId": status.userId,
 					":messageId": Number(event.queryStringParameters.messageId),
 				}
 				break
@@ -37,20 +51,20 @@ export const getMessages = async (event) => {
 
 // Create new message
 export const createMessage = async (event) => {
+	const status = checkAuth(event)
+	if (!status.userId) {
+		return status
+	}
+
 	const newMessage = JSON.parse(event.body)
 	newMessage.messageId = Date.now()
-
+	newMessage.userId = status.userId
 	const params = {
-		TableName: tableName,
+		TableName: TABLE_NAME,
 		Item: newMessage,
 	}
 
-	if (
-		!newMessage.text ||
-		!newMessage.targetUserId ||
-		!newMessage.userId ||
-		!newMessage.unixTimestamp
-	) {
+	if (!newMessage.text || !newMessage.targetUserId || !newMessage.unixTimestamp) {
 		return { statusCode: 400, body: missingRequiredField }
 	}
 

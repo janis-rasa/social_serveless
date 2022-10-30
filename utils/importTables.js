@@ -1,11 +1,11 @@
 "use_strict"
-const fs = require("fs")
-const async = require("async")
-const AWS = require("aws-sdk")
+import fs from "fs"
+import async from "async"
+import AWS from "aws-sdk"
 
 // --- start user config ---
 
-const DYNAMODB_TABLE_NAMES = ["social_posts", "social_messages", "social_users"]
+const DYNAMODB_TABLE_NAMES = ["social_posts", "social_messages", "social_users", "social_auth"]
 const DYNAMODB_REGION = "eu-central-1"
 const DYNAMODB_ENDPOINT = "http://localhost:8010"
 const PATH_TO_JSON_FILES = "./tables/"

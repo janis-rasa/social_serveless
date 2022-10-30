@@ -1,0 +1,9 @@
+{
+	"TableName": "social_auth",
+	"AttributeDefinitions": [{ "AttributeName": "email", "AttributeType": "S" }],
+	"KeySchema": [{ "AttributeName": "email", "KeyType": "HASH" }],
+	"ProvisionedThroughput": {
+		"ReadCapacityUnits": 3,
+		"WriteCapacityUnits": 3
+	}
+}

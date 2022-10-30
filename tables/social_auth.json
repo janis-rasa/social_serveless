@@ -1,0 +1,26 @@
+{
+	"Items": [
+		{
+			"userId": {
+				"N": "2"
+			},
+			"email": {
+				"S": "Ken_Swaniawski@example.com"
+			},
+			"password": {
+				"S": ""
+			}
+		},
+		{
+			"userId": {
+				"N": "1"
+			},
+			"email": {
+				"S": "Jermaine_Rippin@example.com"
+			},
+			"password": {
+				"S": ""
+			}
+		}
+	]
+}

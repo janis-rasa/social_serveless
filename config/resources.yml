@@ -20,9 +20,13 @@ Resources:
       AttributeDefinitions:
         - AttributeName: postsId
           AttributeType: N
+        - AttributeName: unixTimestamp
+          AttributeType: N
       KeySchema:
         - AttributeName: postsId
           KeyType: HASH
+        - AttributeName: unixTimestamp
+          KeyType: RANGE
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
@@ -33,9 +37,26 @@ Resources:
       AttributeDefinitions:
         - AttributeName: messageId
           AttributeType: N
+        - AttributeName: unixTimestamp
+          AttributeType: N
+      KeySchema:
+        - AttributeName: messageId
+          KeyType: HASH
+        - AttributeName: unixTimestamp
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  socialAuth:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: social_auth
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: N
       KeySchema:
         - AttributeName: messageId
           KeyType: HASH
       ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3

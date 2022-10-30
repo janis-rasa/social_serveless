@@ -1,7 +1,7 @@
-import pkg from "aws-sdk"
-const { DynamoDB } = pkg
+import AWS from "aws-sdk"
+const { DynamoDB } = AWS
 
-const documentClient = new DynamoDB.DocumentClient({
+export const documentClient = new DynamoDB.DocumentClient({
 	region: process.env.SERVERLESS_REGION,
 	endpoint: process.env.SERVERLESS_ENDPOINT,
 })

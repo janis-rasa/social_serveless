@@ -36,6 +36,13 @@ aws dynamodb scan --endpoint-url http://localhost:8010 --table-name TABLE_NAME >
 
 where TABLE_NAME is source table name and JSON_FILE is target json file name
 
+After export, don't forget to remove these values at the end of the file.
+
+```
+"Count": 20,
+"ScannedCount": 20
+```
+
 Example:
 
 ```
@@ -56,24 +63,42 @@ To be able to authorize on the framework, you need a [trusted certificate author
 
 ## Routes
 
-Default endpoint: `http://localhost:8010/`
+Default endpoint: `http://localhost:8010`
 
-Default stage: `dev`
+Default stage: `/dev`
 
 Example: `http://localhost:8010/dev/posts`
 
+**All routes except /login and /users/create require user authorization on front-end**
+
+### Login
+
+To login use
+
+```
+POST /login
+```
+
+with email and password inside the request body
+
 ### Messages
 
-Get messages by users
+Get target user's messages for logged in user
 
 ```
-GET  /messages?userId=1&targetUserId=2
+GET  /messages?targetUserId=2
 ```
 
-Get one user message
+Get messages for logged in user from target user
 
 ```
-GET  /messages?userId=1&messageId=38
+GET  /messages?userId=2
+```
+
+Get one message for logged in user
+
+```
+GET  /messages?messageId=38
 ```
 
 Create new message use POST method with `"Content-Type": "application/json"`
@@ -86,11 +111,10 @@ Return messageId
 
 ### Posts
 
-Get posts or posts by user
+Get posts for an authorized user
 
 ```
 GET  /posts
-GET  /posts?userId=1
 ```
 
 To create or update post use POST method with `"Content-Type": "application/json"`. If there is a postId, then the post will be updated.
