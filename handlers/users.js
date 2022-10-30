@@ -1,11 +1,11 @@
 "use strict"
-const { runDynamoDb } = require("./libs/runDynamoDb")
-const { missingRequiredField } = require("./libs/responseMessages")
+import { runDynamoDb } from "./libs/runDynamoDb.js"
+import { missingRequiredField } from "./libs/responseMessages.js"
 
 const tableName = process.env.SERVERLESS_TABLE_SOCIAL_USERS
 
 // Create user
-module.exports.createUser = async (event) => {
+export const createUser = async (event) => {
 	const newUser = JSON.parse(event.body)
 	newUser.userId = Date.now()
 	newUser.isActive = 1
@@ -29,7 +29,7 @@ module.exports.createUser = async (event) => {
 }
 
 // Get users
-module.exports.getUsers = (event) => {
+export const getUsers = (event) => {
 	let params = {
 		TableName: tableName,
 		KeyConditionExpression: "isActive = :isActive",
@@ -65,7 +65,7 @@ module.exports.getUsers = (event) => {
 }
 
 // Delete user
-module.exports.deleteUser = (event) => {
+export const deleteUser = (event) => {
 	const params = {
 		TableName: tableName,
 		Key: {

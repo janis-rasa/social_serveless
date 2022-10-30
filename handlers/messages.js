@@ -1,11 +1,11 @@
 "use strict"
-const { runDynamoDb } = require("./libs/runDynamoDb")
-const { missingRequiredField } = require("./libs/responseMessages")
+import { runDynamoDb } from "./libs/runDynamoDb.js"
+import { missingRequiredField } from "./libs/responseMessages.js"
 
 const tableName = process.env.SERVERLESS_TABLE_SOCIAL_MESSAGES
 
 // Get posts
-module.exports.getMessages = async (event) => {
+export const getMessages = async (event) => {
 	let params = {
 		TableName: tableName,
 		ScanIndexForward: false,
@@ -36,7 +36,7 @@ module.exports.getMessages = async (event) => {
 }
 
 // Create new message
-module.exports.createMessage = async (event) => {
+export const createMessage = async (event) => {
 	const newMessage = JSON.parse(event.body)
 	newMessage.messageId = Date.now()
 

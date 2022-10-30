@@ -1,6 +1,7 @@
 {
+	"type": "module",
 	"name": "socialserveless",
-	"version": "1.6.2",
+	"version": "1.6.3",
 	"description": "Serverless backend",
 	"scripts": {
 		"start": "sls offline",
@@ -14,7 +15,6 @@
 		"serverless-offline": "^11.1.2"
 	},
 	"dependencies": {
-		"serverless-dynamodb-local": "^0.2.40",
-		"slspress": "^2.2.5"
+		"serverless-dynamodb-local": "^0.2.40"
 	}
 }

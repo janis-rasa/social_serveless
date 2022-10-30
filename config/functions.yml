@@ -1,12 +1,10 @@
 hello-world:
-  handler: handler.handle # required, handler set in AWS Lambda
-  name: "${self:service}-${self:provider.stage}" # optional, Deployed Lambda name
-  description: "slspress offline example"
+  handler: handler.hello
+  description: "offline example"
   events:
     - http:
-        path: hello-world
-        method: get
-        cors: true
+        path: hello
+        method: GET
 createUser:
   handler: users.createUser
   events:

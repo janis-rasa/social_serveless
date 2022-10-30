@@ -1,1 +1,1 @@
-module.exports.missingRequiredField = '{ "errorMessage": "Missing a required field!" }'
+export const missingRequiredField = '{ "errorMessage": "Missing a required field!" }'

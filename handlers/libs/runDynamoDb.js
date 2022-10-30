@@ -1,11 +1,12 @@
-const { DynamoDB } = require("aws-sdk")
+import pkg from "aws-sdk"
+const { DynamoDB } = pkg
 
 const documentClient = new DynamoDB.DocumentClient({
 	region: process.env.SERVERLESS_REGION,
 	endpoint: process.env.SERVERLESS_ENDPOINT,
 })
 
-module.exports.runDynamoDb = async (method, params, returnData = {}) => {
+export const runDynamoDb = async (method, params, returnData = {}) => {
 	try {
 		switch (method) {
 			case "query":
