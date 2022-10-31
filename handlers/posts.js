@@ -15,9 +15,9 @@ export const getPosts = async (event) => {
 	let params = {
 		TableName: TABLE_NAME,
 		ScanIndexForward: false,
-		KeyConditionExpression: "isActive = :isActive",
-		ExpressionAttributeValues: { ":isActive": 1 },
-		IndexName: "isActiveIndex",
+		ExpressionAttributeValues: { ":userId": status.userId },
+		KeyConditionExpression: "userId = :userId",
+		IndexName: "userIndex",
 	}
 
 	if (event.queryStringParameters !== null) {
@@ -25,17 +25,14 @@ export const getPosts = async (event) => {
 			case !!event.queryStringParameters.info:
 				params.Select = "COUNT"
 				break
-			default:
-				params.ExpressionAttributeValues = { ":userId": status.userId }
-				params.KeyConditionExpression = "userId = :userId"
-				params.IndexName = "userIndex"
-				if (!!event.queryStringParameters.postId) {
-					params.FilterExpression = "postId = :postId"
-					params.ExpressionAttributeValues = {
-						...params.ExpressionAttributeValues,
-						":postId": Number(event.queryStringParameters.postId),
-					}
+			case !!event.queryStringParameters.postId:
+				params.FilterExpression = "postId = :postId"
+				params.ExpressionAttributeValues = {
+					...params.ExpressionAttributeValues,
+					":postId": Number(event.queryStringParameters.postId),
 				}
+				break
+			default:
 		}
 	}
 
