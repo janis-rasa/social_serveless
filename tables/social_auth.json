@@ -8,7 +8,7 @@
 				"S": "Ken_Swaniawski@example.com"
 			},
 			"password": {
-				"S": ""
+				"S": "$2a$12$nv9iV5/UNuV4Mdj1Jf8zfuUraqboSRtSQqCmtOc4F7rdwmOb9IzNu"
 			}
 		},
 		{
@@ -19,7 +19,7 @@
 				"S": "Jermaine_Rippin@example.com"
 			},
 			"password": {
-				"S": ""
+				"S": "$2a$12$nv9iV5/UNuV4Mdj1Jf8zfuUraqboSRtSQqCmtOc4F7rdwmOb9IzNu"
 			}
 		}
 	]

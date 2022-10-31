@@ -1,6 +1,6 @@
 "use strict"
 import { documentClient } from "./libs/runDynamoDb.js"
-import { generateCookie } from "./libs/cookies.js"
+import { generateCookie, checkAuth } from "./libs/cookies.js"
 import { matchPassword } from "./libs/password.js"
 
 const TABLE_NAME = process.env.SERVERLESS_TABLE_SOCIAL_AUTH
@@ -40,5 +40,14 @@ export const login = async (event) => {
 				body: JSON.stringify({ success: false, err: "Incorrect password" }),
 			}
 		}
+	}
+}
+
+export const isAuthorized = async (event) => {
+	const status = checkAuth(event)
+	if (!status.userId) {
+		return status
+	} else {
+		return { statusCode: 200, body: JSON.stringify({ success: true, isAuthorized: true }) }
 	}
 }

@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"name": "socialserveless",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Serverless backend",
 	"scripts": {
 		"start": "sls offline",

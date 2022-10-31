@@ -69,3 +69,10 @@ login:
         path: login
         method: POST
         cors: true
+isAuthorized:
+  handler: auth.isAuthorized
+  events:
+    - http:
+        path: auth
+        method: GET
+        cors: true
