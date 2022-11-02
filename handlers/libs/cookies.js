@@ -18,7 +18,11 @@ export const generateCookie = (userId, expireTimeInDays) => {
 
 export const verifyCookie = (cookieHeader) => {
 	const { token } = cookie.parse(cookieHeader)
-	return jwt.verify(token, JWT_SECRET)
+	if (token) {
+		return jwt.verify(token, JWT_SECRET)
+	} else {
+		return {}
+	}
 }
 
 export const checkAuth = (event) => {
@@ -34,7 +38,6 @@ export const checkAuth = (event) => {
 	if (!decoded.userId) {
 		return unauthorized
 	}
-
 	const currentTimestamp = new Date().getTime()
 	if (decoded.exp * 1000 < currentTimestamp) {
 		return unauthorized

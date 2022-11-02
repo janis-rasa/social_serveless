@@ -79,7 +79,7 @@ To login use
 POST /login
 ```
 
-with email and password inside the request body. Available credentials for logins:
+with email and password inside the request body. Available credentials for login:
 
 | Email                      | Password |
 | -------------------------- | -------- |

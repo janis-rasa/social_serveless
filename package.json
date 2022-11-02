@@ -1,11 +1,11 @@
 {
 	"type": "module",
 	"name": "socialserveless",
-	"version": "2.0.2",
+	"version": "2.0.3",
 	"description": "Serverless backend",
 	"scripts": {
 		"start": "sls offline",
-		"admin": "dynamodb-admin",
+		"admin": "SET DYNAMO_ENDPOINT=http://localhost:8010&&dynamodb-admin",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "",

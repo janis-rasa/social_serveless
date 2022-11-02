@@ -45,9 +45,9 @@ export const login = async (event) => {
 
 export const isAuthorized = async (event) => {
 	const status = checkAuth(event)
-	if (!status.userId) {
+	if (status.statusCode) {
 		return status
 	} else {
-		return { statusCode: 200, body: JSON.stringify({ success: true, isAuthorized: true }) }
+		return { statusCode: 200, body: JSON.stringify({ success: true, userId: status.userId }) }
 	}
 }
