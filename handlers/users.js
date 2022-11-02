@@ -53,7 +53,7 @@ export const createUser = async (event) => {
 // Get users
 export const getUsers = async (event) => {
 	const status = checkAuth(event)
-	if (!status.userId) {
+	if (status.statusCode) {
 		return status
 	}
 
@@ -94,7 +94,7 @@ export const getUsers = async (event) => {
 // Delete user
 export const deleteUser = async (event) => {
 	const status = checkAuth(event)
-	if (!status.userId) {
+	if (status.statusCode) {
 		return status
 	}
 

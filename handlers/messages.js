@@ -8,7 +8,7 @@ const TABLE_NAME = process.env.SERVERLESS_TABLE_SOCIAL_MESSAGES
 // Get posts
 export const getMessages = async (event) => {
 	const status = checkAuth(event)
-	if (!status.userId) {
+	if (status.statusCode) {
 		return status
 	}
 
@@ -52,7 +52,7 @@ export const getMessages = async (event) => {
 // Create new message
 export const createMessage = async (event) => {
 	const status = checkAuth(event)
-	if (!status.userId) {
+	if (status.statusCode) {
 		return status
 	}
 

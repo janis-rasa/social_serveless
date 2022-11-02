@@ -8,7 +8,7 @@ const TABLE_NAME = process.env.SERVERLESS_TABLE_SOCIAL_POSTS
 // Get posts
 export const getPosts = async (event) => {
 	const status = checkAuth(event)
-	if (!status.userId) {
+	if (status.statusCode) {
 		return status
 	}
 
@@ -39,14 +39,15 @@ export const getPosts = async (event) => {
 	return runDynamoDb("query", params)
 }
 
-// Create new post
+// Create new / edit post
 export const createPost = async (event) => {
 	const status = checkAuth(event)
-	if (!status.userId) {
+	if (status.statusCode) {
 		return status
 	}
 
 	const newPost = JSON.parse(event.body)
+	newPost.userId = status.userId
 	if (!newPost.postId) {
 		newPost.postId = Date.now()
 	}
@@ -56,13 +57,7 @@ export const createPost = async (event) => {
 		Item: newPost,
 	}
 
-	if (
-		!newPost.title ||
-		!newPost.text ||
-		!newPost.status.userId ||
-		!newPost.imageUrl ||
-		!newPost.unixTimestamp
-	) {
+	if (!newPost.title || !newPost.text || !newPost.imageUrl || !newPost.unixTimestamp) {
 		return { statusCode: 400, body: missingRequiredField }
 	}
 
