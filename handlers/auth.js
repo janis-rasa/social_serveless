@@ -32,7 +32,7 @@ export const login = async (event) => {
 				headers: {
 					"Set-Cookie": cookie,
 				},
-				body: JSON.stringify({ success: true }),
+				body: JSON.stringify({ success: true, userId: userId }),
 			}
 		} else {
 			return {
