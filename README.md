@@ -81,10 +81,10 @@ POST /login
 
 with email and password inside the request body. Available credentials for login:
 
-| Email                      | Password |
-| -------------------------- | -------- |
-| ermaine_Rippin@example.com | password |
-| Ken_Swaniawski@example.com | password |
+| Email                       | Password |
+| --------------------------- | -------- |
+| Jermaine_Rippin@example.com | password |
+| Ken_Swaniawski@example.com  | password |
 
 ### Messages
 
