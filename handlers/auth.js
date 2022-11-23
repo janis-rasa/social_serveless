@@ -48,6 +48,13 @@ export const isAuthorized = async (event) => {
 	if (status.statusCode) {
 		return status
 	} else {
-		return { statusCode: 200, body: JSON.stringify({ success: true, userId: status.userId }) }
+		return {
+			statusCode: 200,
+			body: JSON.stringify({
+				success: true,
+				userId: status.userId,
+				expireTimestamp: status.expireTimestamp,
+			}),
+		}
 	}
 }

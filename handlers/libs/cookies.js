@@ -39,9 +39,10 @@ export const checkAuth = (event) => {
 		return unauthorized
 	}
 	const currentTimestamp = new Date().getTime()
-	if (decoded.exp * 1000 < currentTimestamp) {
+	const expireTimestamp = decoded.exp * 1000
+	if (expireTimestamp < currentTimestamp) {
 		return unauthorized
 	}
 
-	return { userId: decoded.userId }
+	return { userId: decoded.userId, expireTimestamp: expireTimestamp }
 }
