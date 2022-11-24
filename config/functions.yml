@@ -69,6 +69,13 @@ login:
         path: login
         method: POST
         cors: true
+logout:
+  handler: auth.logout
+  events:
+    - http:
+        path: logout
+        method: POST
+        cors: true
 isAuthorized:
   handler: auth.isAuthorized
   events:

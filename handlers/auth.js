@@ -43,6 +43,16 @@ export const login = async (event) => {
 	}
 }
 
+export const logout = async () => {
+	return {
+		statusCode: 200,
+		headers: {
+			"Set-Cookie": "token=deleted; expires=Thu, 01 Jan 1970 00:00:00 GMT",
+		},
+		body: JSON.stringify({ success: true }),
+	}
+}
+
 export const isAuthorized = async (event) => {
 	const status = checkAuth(event)
 	if (status.statusCode) {
