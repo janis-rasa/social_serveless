@@ -6,15 +6,79 @@ To start Serverless in offline mode just type
 npm start
 ```
 
-### Docker
+## HTTPS
 
-To create and run a local DynamoDB container with persistent data:
+To be able to authorize on the framework, you need a [trusted certificate authority (CA)](https://en.wikipedia.org/wiki/Certificate_authority). In this project, [mkcert](https://github.com/FiloSottile/mkcert) was used to generate the certificate. How to do this is described in detail [here](https://web.dev/how-to-use-local-https/).
+
+Install mkcert on Windows, use [Chocolatey](https://chocolatey.org/)
 
 ```
-docker run --name LocalDynamoDB -p 8010:8000 -d amazon/dynamodb-local -jar DynamoDBLocal.jar
+choco install mkcert
+```
+
+To add mkcert to your local root CAs run the following command:
+
+```
+mkcert -install
+```
+
+Generate a certificate for your site, signed by mkcert.
+
+In terminal, create the `./keys` directory and navigate to it.
+
+Then, run:
+
+```
+mkcert localhost 127.0.0.1
+```
+
+## Docker
+
+### DynamoDB
+
+To create and run a local DynamoDB container with persistent data. Windows Power shell command line:
+
+```
+docker run `
+   --name LocalDynamoDB `
+	 -p 8010:8000 `
+	 -d amazon/dynamodb-local `
+	 -jar DynamoDBLocal.jar
 ```
 
 After that, you can simply run the LocalDynamoDB container from Docker Desktop.
+
+### S3
+
+This project uses [MinIO](https://min.io/) to build and run S3 offline.
+
+#### Enabling TLS
+
+The MinIO server searches the following directory for TLS keys and certificates (private.key and public.crt):
+
+```
+$env:USERPROFILE\.minio\certs
+```
+
+Where `$env:USERPROFILE` is the home directory of the user running the MinIO Server process. If this directory does not already exist, create it. Then just make a copy of your `key.pem -> private.key` and `cert.pem -> public.crt` you created before and put them in the directory for certificates. After starting the container, the management console is available at [https://localhost:9090/](https://localhost:9090/). Default login:password is `minioadmin:minioadmin` After logging into the console, you need to create a bucket `social-net`.
+
+### S3 docker
+
+Windows Power shell command line:
+
+```
+docker run `
+   -p 9000:9000 `
+   -p 9090:9090 `
+   --name minio-local `
+   -e "MINIO_ROOT_USER=minioadmin" `
+   -e "MINIO_ROOT_PASSWORD=minioadmin" `
+   -v E:\Web\MinIO\socialnet:/data `
+   -v $env:USERPROFILE\.minio\certs:/certs `
+   quay.io/minio/minio server /data --console-address ":9090" --certs-dir /certs
+```
+
+Where `E:\Web\MinIO\socialnet` is your local file storage path.
 
 ### Create tables
 
@@ -56,10 +120,6 @@ To import JSON files from tables folder use the command:
 ```
 node ./utils/importTables.js
 ```
-
-## HTTPS
-
-To be able to authorize on the framework, you need a [trusted certificate authority (CA)](https://en.wikipedia.org/wiki/Certificate_authority). In this project, [mkcert](https://github.com/FiloSottile/mkcert) was used to generate the certificate. How to do this is described in detail [here](https://web.dev/how-to-use-local-https/).
 
 ## Routes
 

@@ -1,4 +1,4 @@
-hello-world:
+hello:
   handler: handler.hello
   description: "offline example"
   events:
@@ -83,3 +83,16 @@ isAuthorized:
         path: auth
         method: GET
         cors: true
+webhook:
+  handler: handler.webhook
+  events:
+    - http:
+        method: GET
+        path: s3
+        cors: true
+s3hook:
+  handler: handler.s3hook
+  events:
+    - http:
+        path: s3hook
+        method: get

@@ -1,0 +1,90 @@
+{
+	"body": null,
+	"headers": {
+		"Host": "localhost:4000",
+		"Connection": "keep-alive",
+		"Cache-Control": "max-age=0",
+		"sec-ch-ua": "\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\"",
+		"sec-ch-ua-mobile": "?0",
+		"sec-ch-ua-platform": "\"Windows\"",
+		"DNT": "1",
+		"Upgrade-Insecure-Requests": "1",
+		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+		"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9",
+		"Sec-Fetch-Site": "none",
+		"Sec-Fetch-Mode": "navigate",
+		"Sec-Fetch-User": "?1",
+		"Sec-Fetch-Dest": "document",
+		"Accept-Encoding": "gzip, deflate, br",
+		"Accept-Language": "en-US,en;q=0.9,ru;q=0.8,lv;q=0.7",
+		"Cookie": "token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY2OTQ1NjY0MiwiZXhwIjoxNjY5NTQzMDQyfQ.XiA4HVHR7wTB3rJCVIXJkgvEbz7Nvu16g-pInwVMQl8; token=AFk6E3UQwLbh/1XymVXTN6duZKNZ+YB3WBfthzP/ERGaqZTjPVVUncs+texd5e1Ds6pfi4picL1FbUTw3/nOzBUPTEYlEcFY7nBrBGekm02rBs129TIXPGXqOMfsS0elP4HYs5a4vhlQbRlCT+6FHy6XX2T4ms5PdGTCnScBDqZB7TJJuZshzSEdZ1W5EXWPbuO1d7f6qTm5uvjGd+2N9LHPAMouc59Tk3Op75t7wqQXeY/rOsbjDQktyaAuzMOX4+7Lc56/eGAvmB3p8w6xxsaAK9xJZAPzSgsOi8OcifFjwinivMU59+IVr9B7Tyz6lOVAjjzNYQEUnyZqMw3YVY7FJ6y0qbdIowAUCypBKeirTMzfd9Zw2w1mdTpZpyTZbmXbIbcpQrT0TwK3SIR4luwLOAWPrS4kW381Xf9HD/LgYQKYyLaAUIv1kHB8Tq/Vu+vDWiyFNmin7TEdiBzG6sy0ymqE7mCiqOMV900R6opH8XDZB4JmiqbFRw5D4pgVEUaUmnpb3XLH56h1UV4StNYfERx8HTvqDb6jJKfXSoZ99QpF2CzdDI8VLg=="
+	},
+	"httpMethod": "GET",
+	"isBase64Encoded": false,
+	"multiValueHeaders": {
+		"Host": ["localhost:4000"],
+		"Connection": ["keep-alive"],
+		"Cache-Control": ["max-age=0"],
+		"sec-ch-ua": ["\"Google Chrome\";v=\"107\", \"Chromium\";v=\"107\", \"Not=A?Brand\";v=\"24\""],
+		"sec-ch-ua-mobile": ["?0"],
+		"sec-ch-ua-platform": ["\"Windows\""],
+		"DNT": ["1"],
+		"Upgrade-Insecure-Requests": ["1"],
+		"User-Agent": [
+			"Mozilla/5.0 (Windows NT 10.0;Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36"
+		],
+		"Accept": [
+			"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9"
+		],
+		"Sec-Fetch-Site": ["none"],
+		"Sec-Fetch-Mode": ["navigate"],
+		"Sec-Fetch-User": ["?1"],
+		"Sec-Fetch-Dest": ["document"],
+		"Accept-Encoding": ["gzip, deflate, br"],
+		"Accept-Language": ["en-US,en;q=0.9,ru;q=0.8,lv;q=0.7"],
+		"Cookie": [
+			"token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsImlhdCI6MTY2OTQ1NjY0MiwiZXhwIjoxNjY5NTQzMDQyfQ.XiA4HVHR7wTB3rJCVIXJkgvEbz7Nvu16g-pInwVMQl8; token=AFk6E3UQwLbh/1XymVXTN6duZKNZ+YB3WBfthzP/ERGaqZTjPVVUncs+texd5e1Ds6pfi4picL1FbUTw3/nOzBUPTEYlEcFY7nBrBGekm02rBs129TIXPGXqOMfsS0elP4HYs5a4vhlQbRlCT+6FHy6XX2T4ms5PdGTCnScBDqZB7TJJuZshzSEdZ1W5EXWPbuO1d7f6qTm5uvjGd+2N9LHPAMouc59Tk3Op75t7wqQXeY/rOsbjDQktyaAuzMOX4+7Lc56/eGAvmB3p8w6xxsaAK9xJZAPzSgsOi8OcifFjwinivMU59+IVr9B7Tyz6lOVAjjzNYQEUnyZqMw3YVY7FJ6y0qbdIowAUCypBKeirTMzfd9Zw2w1mdTpZpyTZbmXbIbcpQrT0TwK3SIR4luwLOAWPrS4kW381Xf9HD/LgYQKYyLaAUIv1kHB8Tq/Vu+vDWiyFNmin7TEdiBzG6sy0ymqE7mCiqOMV900R6opH8XDZB4JmiqbFRw5D4pgVEUaUmnpb3XLH56h1UV4StNYfERx8HTvqDb6jJKfXSoZ99QpF2CzdDI8VLg=="
+		]
+	},
+	"multiValueQueryStringParameters": null,
+	"path": "/s3hook",
+	"pathParameters": null,
+	"queryStringParameters": null,
+	"requestContext": {
+		"accountId": "offlineContext_accountId",
+		"apiId": "offlineContext_apiId",
+		"authorizer": {
+			"principalId": "offlineContext_authorizer_principalId"
+		},
+		"domainName": "offlineContext_domainName",
+		"domainPrefix": "offlineContext_domainPrefix",
+		"extendedRequestId": "89dbd6b5-d4a7-466e-8774-2de827927a41",
+		"httpMethod": "GET",
+		"identity": {
+			"accessKey": null,
+			"accountId": "offlineContext_accountId",
+			"apiKey": "offlineContext_apiKey",
+			"apiKeyId": "offlineContext_apiKeyId",
+			"caller": "offlineContext_caller",
+			"cognitoAuthenticationProvider": "offlineContext_cognitoAuthenticationProvider",
+			"cognitoAuthenticationType": "offlineContext_cognitoAuthenticationType",
+			"cognitoIdentityId": "offlineContext_cognitoIdentityId",
+			"cognitoIdentityPoolId": "offlineContext_cognitoIdentityPoolId",
+			"principalOrgId": null,
+			"sourceIp": "127.0.0.1",
+			"user": "offlineContext_user",
+			"userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36",
+			"userArn": "offlineContext_userArn"
+		},
+		"path": "/s3hook",
+		"protocol": "HTTP/1.1",
+		"requestId": "c028df63-c94a-4f3e-be30-30c046fb0570",
+		"requestTime": "26/Nov/2022:23:17:04 +0200",
+		"requestTimeEpoch": 1669497424890,
+		"resourceId": "offlineContext_resourceId",
+		"resourcePath": "/dev/s3hook",
+		"stage": "dev"
+	},
+	"resource": "/s3hook",
+	"stageVariables": null
+}

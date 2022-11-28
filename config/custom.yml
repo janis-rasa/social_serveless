@@ -1,0 +1,21 @@
+functionsBasePath: handlers
+serverless-offline:
+  httpsProtocol: "keys"
+  httpPort: 4000
+  lambdaPort: 4002
+dynamodb:
+  stages:
+    - dev
+  start:
+    docker: true
+    port: 8010
+    inMemory: false
+    migrate: true
+    seed: true
+    convertEmptyValues: true
+    noStart: true
+serverless-offline-s3:
+  endpoint: http://0.0.0.0:9000
+  region: eu-central-1
+  accessKey: minioadmin
+  secretKey: minioadmin

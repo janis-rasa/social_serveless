@@ -1,7 +1,7 @@
 {
 	"type": "module",
 	"name": "socialserveless",
-	"version": "2.2.0",
+	"version": "2.3.0",
 	"description": "Serverless backend",
 	"scripts": {
 		"start": "sls offline",
@@ -12,12 +12,13 @@
 	"license": "ISC",
 	"devDependencies": {
 		"serverless-functions-base-path": "^1.0.32",
-		"serverless-offline": "^11.1.2"
+		"serverless-offline": "^11.6.0"
 	},
 	"dependencies": {
 		"bcrypt": "^5.1.0",
 		"cookie": "^0.5.0",
 		"jsonwebtoken": "^8.5.1",
-		"serverless-dynamodb-local": "^0.2.40"
+		"serverless-dynamodb-local": "^0.2.40",
+		"serverless-offline-s3": "^6.2.2"
 	}
 }

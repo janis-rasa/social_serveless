@@ -1,5 +1,6 @@
 plugins:
   - serverless-dynamodb-local
+  - serverless-offline-s3
   - serverless-offline
   - serverless-functions-base-path
 
@@ -11,7 +12,7 @@ frameworkVersion: "3"
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs16.x
   stage: dev
   region: eu-central-1
   memorySize: 256
@@ -28,26 +29,19 @@ provider:
             - dynamodb:UpdateItem
             - dynamodb:DeleteItem
           Resource: "arn:aws:dynamodb:eu-central-1:*:*"
+        - Effect: Allow
+          Action: "s3:ListBucket" # Allow functions to list all buckets
+          Resource: "*"
+        - Effect: Allow
+          Action: # Allow functions to read/write objects in a bucket
+            - "s3:GetObject"
+            - "s3:PutObject"
+          Resource:
+            - "arn:aws:s3:::social-net/*"
   environment: ${file(./config/environment.yml)}
 
-custom:
-  functionsBasePath: handlers
-  serverless-offline:
-    httpsProtocol: "keys"
-    httpPort: 4000
-    lambdaPort: 4002
-  dynamodb:
-    stages:
-      - dev
-    start:
-      docker: true
-      port: 8010
-      inMemory: true
-      migrate: true
-      seed: true
-      convertEmptyValues: true
-      noStart: true
+custom: ${file(./config/custom.yml)}
+
+resources: ${file(./config/resources.yml)}
 
 functions: ${file(./config/functions.yml)}
-
-resources: ${file(./config/resources.yml)} # CloudFormation template syntax
