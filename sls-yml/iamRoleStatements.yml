@@ -1,0 +1,19 @@
+- Effect: Allow
+  Action:
+    - dynamodb:DescribeTable
+    - dynamodb:Query
+    - dynamodb:Scan
+    - dynamodb:GetItem
+    - dynamodb:PutItem
+    - dynamodb:UpdateItem
+    - dynamodb:DeleteItem
+  Resource: "arn:aws:dynamodb:${env:REGION}:*:*"
+- Effect: Allow
+  Action: "s3:ListBucket" # Allow functions to list all buckets
+  Resource: "*"
+- Effect: Allow
+  Action: # Allow functions to read/write objects in a bucket
+    - "s3:GetObject"
+    - "s3:PutObject"
+  Resource:
+    - "arn:aws:s3:::social-net/*"

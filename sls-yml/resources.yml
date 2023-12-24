@@ -1,0 +1,149 @@
+# CloudFormation template syntax
+Resources:
+  socialUsers:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${env:TABLE_NAME_USERS}
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: isActive
+          AttributeType: N
+        - AttributeName: firstName
+          AttributeType: S
+        - AttributeName: userName
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3
+      GlobalSecondaryIndexes:
+        - IndexName: isActiveIndex
+          KeySchema:
+            - AttributeName: isActive
+              KeyType: HASH
+            - AttributeName: firstName
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 3
+        - IndexName: userNameIndex
+          KeySchema:
+            - AttributeName: userName
+              KeyType: HASH
+            - AttributeName: firstName
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 3
+  socialPosts:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${env:TABLE_NAME_POSTS}
+      AttributeDefinitions:
+        - AttributeName: postId
+          AttributeType: S
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: isActive
+          AttributeType: N
+        - AttributeName: unixTimestamp
+          AttributeType: N
+      KeySchema:
+        - AttributeName: postId
+          KeyType: HASH
+        - AttributeName: unixTimestamp
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3
+      GlobalSecondaryIndexes:
+        - IndexName: usersIndex
+          KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: unixTimestamp
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 3
+        - IndexName: isActiveIndex
+          KeySchema:
+            - AttributeName: isActive
+              KeyType: HASH
+            - AttributeName: unixTimestamp
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 3
+  socialMessages:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${env:TABLE_NAME_MESSAGES}
+      AttributeDefinitions:
+        - AttributeName: messageId
+          AttributeType: S
+        - AttributeName: unixTimestamp
+          AttributeType: N
+        - AttributeName: targetUserId
+          AttributeType: S
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: messageId
+          KeyType: HASH
+        - AttributeName: unixTimestamp
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 3
+        WriteCapacityUnits: 3
+      GlobalSecondaryIndexes:
+        - IndexName: usersIndex
+          KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: targetUserId
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 3
+        - IndexName: usersAndMessageIndex
+          KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: messageId
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 3
+            WriteCapacityUnits: 3
+  socialAuth:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${env:TABLE_NAME_AUTH}
+      AttributeDefinitions:
+        - AttributeName: email
+          AttributeType: S
+      KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+  s3Resource:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: ${env:BUCKET_NAME}

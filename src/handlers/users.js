@@ -1,4 +1,3 @@
-"use strict"
 import { runDynamoDb } from "./libs/runDynamoDb.js"
 import { missingRequiredField } from "./libs/responseMessages.js"
 import { checkAuth } from "./libs/cookies.js"

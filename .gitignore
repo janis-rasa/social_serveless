@@ -8,3 +8,18 @@ jspm_packages
 # Keys directory
 keys
 
+package-lock.json
+
+.build
+.sonarlint
+.history
+.vscode
+.idea
+.DS_Store
+
+# Logs
+*.log
+
+# docker
+docker
+.dynamodb

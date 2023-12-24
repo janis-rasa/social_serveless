@@ -1,0 +1,3 @@
+name: verifyToken
+type: request
+identitySource: $request.header.cookie

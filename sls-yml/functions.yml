@@ -1,0 +1,95 @@
+hello:
+  handler: src/handlers/hello/hello.handler
+  description: "offline example"
+  events:
+    - httpApi:
+        path: /hello
+        method: GET
+createUser:
+  handler: src/handlers/users/createUser.handler
+  events:
+    - httpApi:
+        path: /users/create
+        method: POST
+  environment:
+      TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
+      TABLE_NAME_AUTH: ${env:TABLE_NAME_AUTH}
+getUsers:
+  handler: src/handlers/users/queryUsers.handler
+  events:
+    - httpApi:
+        path: /users
+        method: GET
+        authorizer: ${file(./sls-yml/authorizer.yml)}
+  environment:
+      TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
+login:
+  handler: src/handlers/auth/auth.login
+  events:
+    - httpApi:
+        path: /login
+        method: POST
+  environment:
+    TABLE_NAME_AUTH: ${env:TABLE_NAME_AUTH}
+logout:
+  handler: src/handlers/auth/auth.logout
+  events:
+    - httpApi:
+        path: /logout
+        method: POST
+isAuthorized:
+  handler: src/handlers/auth/auth.isAuthorized
+  events:
+    - httpApi:
+        path: /auth
+        method: GET
+verifyToken:
+  handler: src/handlers/auth/auth.verifyToken
+# deleteUser:
+#   handler: src/handlers/users.deleteUser
+#   events:
+#     - httpApi:
+#         path: /users
+#         method: DELETE
+# getPosts:
+#   handler: src/handlers/posts.getPosts
+#   events:
+#     - httpApi:
+#         path: /posts
+#         method: GET
+# createPost:
+#   handler: src/handlers/posts.createPost
+#   events:
+#     - httpApi:
+#         path: /posts/create
+#         method: POST
+# deletePost:
+#   handler: src/handlers/posts.deletePost
+#   events:
+#     - httpApi:
+#         path: /posts
+#         method: DELETE
+# getMessages:
+#   handler: src/handlers/messages.getMessages
+#   events:
+#     - httpApi:
+#         path: /messages
+#         method: GET
+# createMessage:
+#   handler: src/handlers/messages.createMessage
+#   events:
+#     - httpApi:
+#         path: /messages/create
+#         method: POST
+# webhook:
+#   handler: src/handlers/handler.webhook
+#   events:
+#     - httpApi:
+#         method: GET
+#         path: /s3
+# s3hook:
+#   handler: src/handlers/handler.s3hook
+#   events:
+#     - httpApi:
+#         path: /s3hook
+#         method: GET

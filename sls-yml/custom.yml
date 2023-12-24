@@ -1,0 +1,32 @@
+functionsBasePath: handlers
+serverless-offline:
+  httpPort: 4000
+  lambdaPort: 4002
+serverless-dynamodb:
+  stages:
+    - local
+  start:
+    docker: true
+    port: 8010
+    inMemory: true
+    heapInitial: 200m
+    heapMax: 1g
+    migrate: true
+    seed: true
+    convertEmptyValues: true
+  seed:
+    test:
+      sources:
+        - table: ${env:TABLE_NAME_USERS}
+          rawsources: [./dynamodb-tables/social-users-data.json]
+        - table: ${env:TABLE_NAME_MESSAGES}
+          rawsources: [./dynamodb-tables/social-messages-data.json]
+        - table: ${env:TABLE_NAME_POSTS}
+          rawsources: [./dynamodb-tables/social-posts-data.json]
+        - table: ${env:TABLE_NAME_AUTH}
+          rawsources: [./dynamodb-tables/social-auth-data.json]
+serverless-offline-s3:
+  endpoint: http://0.0.0.0:9000
+  region: ${env:REGION}
+  accessKey: minioadmin
+  secretKey: minioadmin
