@@ -33,5 +33,9 @@ export const verifyCookie = (
     return {}
   }
   const response = jwt.verify(token, jwtSecret)
+  if (!(response instanceof Object)) {
+    console.log('jwt.verify message: ', response)
+    return {}
+  }
   return response
 }

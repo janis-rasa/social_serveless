@@ -1,10 +1,10 @@
 [
   {
     "userId": {
-      "S": "1"
+      "S": "3"
     },
     "email": {
-      "S": "Karla.Conn@example.com"
+      "S": "Erma.Will66@example.com"
     },
     "password": {
       "S": "$2b$10$3F3on8bi7nOnG3j0XXQ21u9zDOLBeJoZfrneQ/8cQLbPhQZKn558e"
@@ -12,10 +12,10 @@
   },
   {
     "userId": {
-      "S": "3"
+      "S": "6"
     },
     "email": {
-      "S": "Dustin.Schneider96@example.com"
+      "S": "Ervin.Deckow@example.com"
     },
     "password": {
       "S": "$2b$10$3F3on8bi7nOnG3j0XXQ21u9zDOLBeJoZfrneQ/8cQLbPhQZKn558e"

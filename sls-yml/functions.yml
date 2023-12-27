@@ -1,6 +1,8 @@
+verifyToken:
+  handler: src/handlers/auth/verifyToken.handler
 hello:
   handler: src/handlers/hello/hello.handler
-  description: "offline example"
+  description: 'offline example'
   events:
     - httpApi:
         path: /hello
@@ -9,22 +11,23 @@ createUser:
   handler: src/handlers/users/createUser.handler
   events:
     - httpApi:
-        path: /users/create
+        path: /users
         method: POST
   environment:
-      TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
-      TABLE_NAME_AUTH: ${env:TABLE_NAME_AUTH}
+    TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
+    TABLE_NAME_AUTH: ${env:TABLE_NAME_AUTH}
 getUsers:
-  handler: src/handlers/users/queryUsers.handler
+  handler: src/handlers/users/getUsers.handler
   events:
     - httpApi:
         path: /users
         method: GET
-        authorizer: ${file(./sls-yml/authorizer.yml)}
+        authorizer:
+          name: verifyToken
   environment:
-      TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
+    TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
 login:
-  handler: src/handlers/auth/auth.login
+  handler: src/handlers/auth/login.handler
   events:
     - httpApi:
         path: /login
@@ -32,37 +35,63 @@ login:
   environment:
     TABLE_NAME_AUTH: ${env:TABLE_NAME_AUTH}
 logout:
-  handler: src/handlers/auth/auth.logout
+  handler: src/handlers/auth/logout.handler
   events:
     - httpApi:
         path: /logout
         method: POST
+        authorizer:
+          name: verifyToken
 isAuthorized:
-  handler: src/handlers/auth/auth.isAuthorized
+  handler: src/handlers/auth/isAuthorized.handler
   events:
     - httpApi:
         path: /auth
         method: GET
-verifyToken:
-  handler: src/handlers/auth/auth.verifyToken
+getUserPosts:
+  handler: src/handlers/posts/getUserPosts.handler
+  events:
+    - httpApi:
+        path: /posts/{userId}
+        method: GET
+        authorizer:
+          name: verifyToken
+  environment:
+    TABLE_NAME_POSTS: ${env:TABLE_NAME_POSTS}
+createPost:
+  handler: src/handlers/posts/createPost.handler
+  events:
+    - httpApi:
+        path: /posts
+        method: POST
+        authorizer:
+          name: verifyToken
+  environment:
+    TABLE_NAME_POSTS: ${env:TABLE_NAME_POSTS}
+updatePost:
+  handler: src/handlers/posts/updatePost.handler
+  events:
+    - httpApi:
+        path: /posts
+        method: PATCH
+        authorizer:
+          name: verifyToken
+  environment:
+    TABLE_NAME_POSTS: ${env:TABLE_NAME_POSTS}
+deletePost:
+  handler: src/handlers/deletePost.handler
+  events:
+    - httpApi:
+        path: /posts/{postId}
+        method: DELETE
+        authorizer:
+          name: verifyToken
 # deleteUser:
 #   handler: src/handlers/users.deleteUser
 #   events:
 #     - httpApi:
 #         path: /users
 #         method: DELETE
-# getPosts:
-#   handler: src/handlers/posts.getPosts
-#   events:
-#     - httpApi:
-#         path: /posts
-#         method: GET
-# createPost:
-#   handler: src/handlers/posts.createPost
-#   events:
-#     - httpApi:
-#         path: /posts/create
-#         method: POST
 # deletePost:
 #   handler: src/handlers/posts.deletePost
 #   events:

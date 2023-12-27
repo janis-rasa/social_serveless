@@ -4,7 +4,7 @@ plugins:
   - serverless-offline
 app: social-serveless
 service: social-serveless
-frameworkVersion: "3"
+frameworkVersion: '3'
 useDotenv: true
 
 provider:
@@ -16,6 +16,12 @@ provider:
   memorySize: 256
   iamRoleStatements: ${file(./sls-yml/iamRoleStatements.yml)}
   environment: ${file(./sls-yml/environment.yml)}
+  httpApi:
+    authorizers:
+      verifyToken:
+        type: request
+        name: verifyToken
+        identitySource: $request.header.cookie
 
 custom: ${file(./sls-yml/custom.yml)}
 

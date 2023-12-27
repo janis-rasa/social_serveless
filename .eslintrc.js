@@ -5,6 +5,7 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
+    'prettier',
     'plugin:import/typescript',
     'plugin:prettier/recommended',
     '@serverless/eslint-config/node',
@@ -21,18 +22,7 @@ module.exports = {
   plugins: ['@typescript-eslint', 'prettier'],
   rules: {
     'linebreak-style': ['error', 'windows'],
-    'prettier/prettier': [
-      'error',
-      {
-        trailingComma: 'es5',
-        singleQuote: true,
-        semi: false,
-        tabWidth: 2,
-        useTabs: false,
-        printWidth: 80,
-        endOfLine: 'crlf',
-      },
-    ],
+    'prettier/prettier': 'error',
     'import/prefer-default-export': 'off',
     'no-unused-vars': 'error',
     'no-console': 'off',

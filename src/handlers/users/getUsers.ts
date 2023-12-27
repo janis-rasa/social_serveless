@@ -1,6 +1,5 @@
 import { QueryCommandInput } from '@aws-sdk/lib-dynamodb'
-import { queryItems } from '../../aws/dynamodb/queryItems'
-import { returnData } from '../../utils/returnData'
+import { returnQueryItems } from '../../aws/dynamodb/queryItems'
 
 export const handler = async () => {
   const { TABLE_NAME_USERS } = process.env
@@ -18,12 +17,5 @@ export const handler = async () => {
     TableName: TABLE_NAME_USERS,
     ScanIndexForward: true,
   }
-  try {
-    const data = await queryItems(params)
-    return returnData(200, 'User list', data)
-  } catch (error: any) {
-    const errMessage = error.message ?? 'Unknown error'
-    console.error(errMessage)
-    return returnData(500, 'Internal error', { message: errMessage })
-  }
+  return returnQueryItems(params, 'User list')
 }

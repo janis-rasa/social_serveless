@@ -1,4 +1,9 @@
-export const generatePolicy = (principalId: string, effect: string) => {
+import { AwsPolicyIF } from '../../../types/auth'
+
+export const generatePolicy = (
+  principalId: string,
+  effect: string
+): AwsPolicyIF => {
   return {
     principalId,
     policyDocument: {
@@ -7,9 +12,12 @@ export const generatePolicy = (principalId: string, effect: string) => {
         {
           Action: 'execute-api:Invoke',
           Effect: effect,
-          Resource: '*',
+          Resource: 'arn:aws:execute-api:*:*:*',
         },
       ],
+    },
+    context: {
+      userId: principalId,
     },
   }
 }
