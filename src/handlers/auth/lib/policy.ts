@@ -1,9 +1,4 @@
-import { AwsPolicyIF } from '../../../types/auth'
-
-export const generatePolicy = (
-  principalId: string,
-  effect: string
-): AwsPolicyIF => {
+export const generatePolicy = (principalId: string, effect: string) => {
   return {
     principalId,
     policyDocument: {
