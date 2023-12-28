@@ -9,7 +9,6 @@ export interface UserBaseIF {
 export interface UserIF extends UserBaseIF {
   userId: string
   isActive?: number
-  isAdmin: number
 }
 
 export interface InputUserCreateIF extends UserBaseIF {

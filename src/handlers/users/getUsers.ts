@@ -4,7 +4,7 @@ import { returnQueryItems } from '../../aws/dynamodb/queryItems'
 export const handler = async () => {
   const { TABLE_NAME_USERS } = process.env
   if (!TABLE_NAME_USERS) {
-    const errMessage = 'No TABLE_NAME_USERS'
+    const errMessage = 'No table name USERS'
     console.log(errMessage)
     throw new Error(errMessage)
   }

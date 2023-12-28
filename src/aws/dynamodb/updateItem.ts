@@ -4,7 +4,7 @@ import { ddbDocClient } from './lib/ddbDocClient'
 export const updateItem = async (params: UpdateCommandInput) => {
   try {
     await ddbDocClient.send(new UpdateCommand(params))
-    console.log(`Item ${params.AttributeUpdates} updated successfully`)
+    console.log(`Item ${JSON.stringify(params.Key)} updated successfully`)
     return {
       success: true,
     }
@@ -14,9 +14,10 @@ export const updateItem = async (params: UpdateCommandInput) => {
         error
       )}`
     )
-    return {
+    const errorResponse = {
       success: false,
-      error,
+      message: error.message ?? 'Unknown error',
     }
+    throw errorResponse
   }
 }

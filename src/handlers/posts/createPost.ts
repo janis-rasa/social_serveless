@@ -2,10 +2,10 @@ import { APIGatewayEvent } from 'aws-lambda'
 import { v4 as uuidv4 } from 'uuid'
 import { PutCommandInput } from '@aws-sdk/lib-dynamodb'
 import { returnData } from '../../utils/returnData'
-import { putItem } from '../../aws/dynamodb/putItem'
+import { returnPutItems } from '../../aws/dynamodb/putItem'
 import { validateInput } from '../../utils/validateInput'
 import { postCreateSchema } from './validation/postValidation'
-import { InputPostIF } from '../../types/posts'
+import { InputPostIF, PostIF } from '../../types/posts'
 
 export const handler = async (event: APIGatewayEvent) => {
   const { TABLE_NAME_POSTS } = process.env
@@ -20,7 +20,7 @@ export const handler = async (event: APIGatewayEvent) => {
 
   await validateInput(postCreateSchema, postData)
 
-  const post = {
+  const post: PostIF = {
     ...postData,
     userId,
     postId: uuidv4(),
@@ -32,17 +32,6 @@ export const handler = async (event: APIGatewayEvent) => {
     TableName: TABLE_NAME_POSTS,
     Item: post,
   }
-  try {
-    const response = await putItem(params)
-    if (response.success) {
-      console.log(`Post with Id ${post.postId} created!`)
-      return returnData(200, 'Success!', { postId: post.postId })
-    }
-    return returnData(
-      400,
-      `Create post failed with message: ${response.error.message}`
-    )
-  } catch (error) {
-    return returnData(500, 'Internal Server Error', { error })
-  }
+
+  return returnPutItems(params, { postId: post.postId })
 }

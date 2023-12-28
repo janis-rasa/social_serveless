@@ -4,7 +4,7 @@ import { PutCommandInput } from '@aws-sdk/lib-dynamodb'
 import bcrypt from 'bcrypt'
 import { putItem } from '../../aws/dynamodb/putItem'
 import { returnData } from '../../utils/returnData'
-import { InputUserCreateIF } from '../../types/users'
+import { InputUserCreateIF, UserIF } from '../../types/users'
 import { userCreateSchema } from './validation/usersValidation'
 import { validateInput } from '../../utils/validateInput'
 
@@ -21,17 +21,18 @@ export const handler = async (event: APIGatewayEvent) => {
   await validateInput(userCreateSchema, user)
 
   const uuid = uuidv4()
+  const item: UserIF = {
+    userId: uuid,
+    firstName: user.firstName,
+    isActive: 1,
+    lastName: user.lastName,
+    email: user.email,
+    userName: user.userName,
+    avatarUrl: user.avatarUrl,
+  }
   const params: PutCommandInput = {
     TableName: TABLE_NAME_USERS,
-    Item: {
-      userId: uuid,
-      firstName: user.firstName,
-      isActive: 1,
-      lastName: user.lastName,
-      email: user.email,
-      userName: user.userName,
-      avatarUrl: user.avatarUrl,
-    },
+    Item: item,
   }
 
   const salt = bcrypt.genSaltSync(10)

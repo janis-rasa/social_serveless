@@ -1,5 +1,6 @@
 import { PutCommand, PutCommandInput } from '@aws-sdk/lib-dynamodb'
 import { ddbDocClient } from './lib/ddbDocClient'
+import { returnData } from '../../utils/returnData'
 
 export const putItem = async (params: PutCommandInput) => {
   try {
@@ -12,10 +13,29 @@ export const putItem = async (params: PutCommandInput) => {
       success: true,
     }
   } catch (error: any) {
-    console.log('Error: ', error.stack)
-    return {
+    console.log(
+      `Put item into table ${
+        params.TableName
+      } ends with error: ${JSON.stringify(error)}`
+    )
+    const result = {
       success: false,
-      error,
+      message: error.message,
     }
+    throw result
+  }
+}
+
+export const returnPutItems = async (
+  params: PutCommandInput,
+  returnedObject: Object
+) => {
+  try {
+    await putItem(params)
+    return returnData(200, 'Success!', returnedObject)
+  } catch (error: any) {
+    const errMessage = error.message ?? 'Unknown error'
+    console.error(errMessage)
+    return returnData(500, 'Internal error', { message: errMessage })
   }
 }

@@ -79,37 +79,39 @@ updatePost:
   environment:
     TABLE_NAME_POSTS: ${env:TABLE_NAME_POSTS}
 deletePost:
-  handler: src/handlers/deletePost.handler
+  handler: src/handlers/posts/deletePost.handler
   events:
     - httpApi:
         path: /posts/{postId}
         method: DELETE
         authorizer:
           name: verifyToken
+getMessages:
+  handler: src/handlers/messages/getMessages.handler
+  events:
+    - httpApi:
+        path: /messages
+        method: GET
+        authorizer:
+          name: verifyToken
+  environment:
+    TABLE_NAME_MESSAGES: ${env:TABLE_NAME_MESSAGES}
+createMessage:
+  handler: src/handlers/messages/createMessage.handler
+  events:
+    - httpApi:
+        path: /messages
+        method: POST
+        authorizer:
+          name: verifyToken
+  environment:
+    TABLE_NAME_MESSAGES: ${env:TABLE_NAME_MESSAGES}
 # deleteUser:
 #   handler: src/handlers/users.deleteUser
 #   events:
 #     - httpApi:
 #         path: /users
 #         method: DELETE
-# deletePost:
-#   handler: src/handlers/posts.deletePost
-#   events:
-#     - httpApi:
-#         path: /posts
-#         method: DELETE
-# getMessages:
-#   handler: src/handlers/messages.getMessages
-#   events:
-#     - httpApi:
-#         path: /messages
-#         method: GET
-# createMessage:
-#   handler: src/handlers/messages.createMessage
-#   events:
-#     - httpApi:
-#         path: /messages/create
-#         method: POST
 # webhook:
 #   handler: src/handlers/handler.webhook
 #   events:

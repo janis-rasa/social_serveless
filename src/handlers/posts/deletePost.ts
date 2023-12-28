@@ -4,7 +4,7 @@ import { returnData } from '../../utils/returnData'
 import { updateItem } from '../../aws/dynamodb/updateItem'
 import { checkPostOwner } from './utils'
 
-export const deletePost = async (event: APIGatewayEvent) => {
+export const handler = async (event: APIGatewayEvent) => {
   const { TABLE_NAME_POSTS } = process.env
   if (!TABLE_NAME_POSTS) {
     return returnData(400, 'Table name is not defined!')

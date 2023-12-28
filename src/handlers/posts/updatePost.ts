@@ -39,15 +39,9 @@ export const handler = async (event: APIGatewayEvent) => {
     },
   }
   try {
-    const response = await updateItem(params)
-    if (response.success) {
-      console.log(`Post with Id ${postData.postId} created!`)
-      return returnData(200, 'Success!', { postId: postData.postId })
-    }
-    return returnData(
-      400,
-      `Create post failed with message: ${response.error.message}`
-    )
+    await updateItem(params)
+    console.log(`Post with Id ${postData.postId} updated!`)
+    return returnData(200, 'Success!', { postId: postData.postId })
   } catch (error) {
     return returnData(500, 'Internal Server Error', { error })
   }

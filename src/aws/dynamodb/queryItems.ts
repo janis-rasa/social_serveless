@@ -17,7 +17,11 @@ export const queryItems = async (params: QueryCommandInput) => {
     console.error(
       `Query table ${params.TableName} Error: ${JSON.stringify(error)}`
     )
-    throw new Error(error.message)
+    const errorResponse = {
+      success: false,
+      message: error.message,
+    }
+    throw errorResponse
   }
 }
 
