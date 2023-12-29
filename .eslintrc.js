@@ -7,8 +7,8 @@ module.exports = {
     'airbnb-base',
     'prettier',
     'plugin:import/typescript',
-    'plugin:prettier/recommended',
     '@serverless/eslint-config/node',
+    'plugin:prettier/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -16,7 +16,7 @@ module.exports = {
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    ecmaVersion: 2018,
+    ecmaVersion: 2020,
     sourceType: 'module',
   },
   plugins: ['@typescript-eslint', 'prettier'],
