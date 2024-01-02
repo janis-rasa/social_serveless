@@ -32,10 +32,10 @@ export const returnPutItems = async (
 ) => {
   try {
     await putItem(params)
-    return returnData(200, 'Success!', returnedObject)
+    return returnData(200, 'Success!', true, returnedObject)
   } catch (error: any) {
     const errMessage = error.message ?? 'Unknown error'
     console.error(errMessage)
-    return returnData(500, 'Internal error', { message: errMessage })
+    return returnData(500, 'Internal error', false, { message: errMessage })
   }
 }

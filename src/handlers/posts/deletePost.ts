@@ -7,7 +7,7 @@ import { checkPostOwner } from './utils'
 export const handler = async (event: APIGatewayEvent) => {
   const { TABLE_NAME_POSTS } = process.env
   if (!TABLE_NAME_POSTS) {
-    return returnData(400, 'Table name is not defined!')
+    return returnData(400, 'Table name is not defined!', false)
   }
   const postId = event.pathParameters?.postId as string
   const userId: string = event.requestContext.authorizer?.lambda.userId
@@ -23,5 +23,5 @@ export const handler = async (event: APIGatewayEvent) => {
     },
   }
   const response = await updateItem(updateParams)
-  return returnData(200, 'Post deleted', response)
+  return returnData(200, 'Post deleted', true, response)
 }

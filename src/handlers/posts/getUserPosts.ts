@@ -6,7 +6,7 @@ import { returnData } from '../../utils/returnData'
 export const handler = async (event: APIGatewayEvent) => {
   const { TABLE_NAME_POSTS } = process.env
   if (!TABLE_NAME_POSTS) {
-    return returnData(400, 'Table name is not defined!')
+    return returnData(400, 'Table name is not defined!', false)
   }
   const userId = event.pathParameters?.userId
   const params: QueryCommandInput = {

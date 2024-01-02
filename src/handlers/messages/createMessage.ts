@@ -10,10 +10,10 @@ export const handler = async (event: APIGatewayEvent) => {
   const userId: string = event.requestContext.authorizer?.lambda.userId
   const { TABLE_NAME_MESSAGES } = process.env
   if (!TABLE_NAME_MESSAGES) {
-    return returnData(400, 'Table name is not defined!')
+    return returnData(400, 'Table name is not defined!', false)
   }
   if (!event.body) {
-    return returnData(400, 'No body!')
+    return returnData(400, 'No body!', false)
   }
   const newMessage = JSON.parse(event.body)
   await validateInput(messageCreateSchema, newMessage)

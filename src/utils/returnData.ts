@@ -1,5 +1,6 @@
 export interface BodyDataIF {
   message: string
+  success: boolean
   data?: {
     [key: string]: any
   }
@@ -12,10 +13,12 @@ export interface StandardResponse {
 export const returnData = (
   statusCode: number,
   message: string,
+  success: boolean,
   data?: Object
 ): StandardResponse => {
   const body: BodyDataIF = {
     message,
+    success,
   }
 
   if (data && Object.keys(data).length) {

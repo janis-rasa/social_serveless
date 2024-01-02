@@ -31,10 +31,10 @@ export const returnQueryItems = async (
 ) => {
   try {
     const data = await queryItems(params)
-    return returnData(200, successMessage, data)
+    return returnData(200, successMessage, true, data)
   } catch (error: any) {
     const errMessage = error.message ?? 'Unknown error'
     console.error(errMessage)
-    return returnData(500, 'Internal error', { message: errMessage })
+    return returnData(500, 'Internal error', false, { message: errMessage })
   }
 }

@@ -10,11 +10,11 @@ import { checkPostOwner } from './utils'
 export const handler = async (event: APIGatewayEvent) => {
   const { TABLE_NAME_POSTS } = process.env
   if (!TABLE_NAME_POSTS) {
-    return returnData(400, 'Table name is not defined!')
+    return returnData(400, 'Table name is not defined!', false)
   }
   const userId: string = event.requestContext.authorizer?.lambda.userId
   if (!event.body) {
-    return returnData(400, 'No body!')
+    return returnData(400, 'No body!', false)
   }
   const postData: InputUpdatePostIF = JSON.parse(event.body)
 
@@ -41,8 +41,8 @@ export const handler = async (event: APIGatewayEvent) => {
   try {
     await updateItem(params)
     console.log(`Post with Id ${postData.postId} updated!`)
-    return returnData(200, 'Success!', { postId: postData.postId })
+    return returnData(200, 'Success!', true, { postId: postData.postId })
   } catch (error) {
-    return returnData(500, 'Internal Server Error', { error })
+    return returnData(500, 'Internal Server Error', false, { error })
   }
 }

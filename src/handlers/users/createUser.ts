@@ -11,10 +11,10 @@ import { validateInput } from '../../utils/validateInput'
 export const handler = async (event: APIGatewayEvent) => {
   const { TABLE_NAME_USERS, TABLE_NAME_AUTH } = process.env
   if (!TABLE_NAME_USERS) {
-    return returnData(400, 'Table name is not defined!')
+    return returnData(400, 'Table name is not defined!', false)
   }
   if (!event.body) {
-    return returnData(400, 'No body!')
+    return returnData(400, 'No body!', false)
   }
   const user: InputUserCreateIF = JSON.parse(event.body)
 
@@ -29,6 +29,7 @@ export const handler = async (event: APIGatewayEvent) => {
     email: user.email,
     userName: user.userName,
     avatarUrl: user.avatarUrl,
+    followed: [],
   }
   const params: PutCommandInput = {
     TableName: TABLE_NAME_USERS,
@@ -55,10 +56,10 @@ export const handler = async (event: APIGatewayEvent) => {
 
     if (result.success && resultAuth.success) {
       console.log(`User with Id ${uuid} created!`)
-      return returnData(200, 'Success!', { userId: uuid })
+      return returnData(200, 'Success!', true, { userId: uuid })
     }
-    return returnData(400, 'Failed to create user or auth entry')
+    return returnData(400, 'Failed to create user or auth entry', false)
   } catch (error) {
-    return returnData(500, 'Internal Server Error', { error })
+    return returnData(500, 'Internal Server Error', false, { error })
   }
 }

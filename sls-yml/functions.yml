@@ -26,6 +26,16 @@ getUsers:
           name: verifyToken
   environment:
     TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
+getUser:
+  handler: src/handlers/users/getUser.handler
+  events:
+    - httpApi:
+        path: /users/{userId}
+        method: GET
+        authorizer:
+          name: verifyToken
+  environment:
+    TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
 login:
   handler: src/handlers/auth/login.handler
   events:
@@ -34,6 +44,7 @@ login:
         method: POST
   environment:
     TABLE_NAME_AUTH: ${env:TABLE_NAME_AUTH}
+    TABLE_NAME_USERS: ${env:TABLE_NAME_USERS}
 logout:
   handler: src/handlers/auth/logout.handler
   events:

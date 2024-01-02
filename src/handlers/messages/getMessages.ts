@@ -55,10 +55,10 @@ const getUserMessage = async (
 export const handler = async (event: APIGatewayEvent) => {
   const { TABLE_NAME_MESSAGES } = process.env
   if (!TABLE_NAME_MESSAGES) {
-    return returnData(400, 'Table name is not defined!')
+    return returnData(400, 'Table name is not defined!', false)
   }
   if (event.queryStringParameters === null) {
-    return returnData(400, 'No parameters!')
+    return returnData(400, 'No parameters!', false)
   }
   const currentUserId: string = event.requestContext.authorizer?.lambda.userId
   const params: QueryCommandInput = {
@@ -68,11 +68,11 @@ export const handler = async (event: APIGatewayEvent) => {
   const { targetUserId, messageId } = event.queryStringParameters
   if (targetUserId) {
     const data = await getUsersChat(params, currentUserId, targetUserId)
-    return returnData(200, 'Messages list', data)
+    return returnData(200, 'Messages list', true, data)
   }
   if (messageId) {
     const data = await getUserMessage(params, currentUserId, messageId)
-    return returnData(200, 'User message', data)
+    return returnData(200, 'User message', true, data)
   }
-  return returnData(200, 'OK')
+  return returnData(200, 'OK', true)
 }

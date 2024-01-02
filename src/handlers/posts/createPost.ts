@@ -10,11 +10,11 @@ import { InputPostIF, PostIF } from '../../types/posts'
 export const handler = async (event: APIGatewayEvent) => {
   const { TABLE_NAME_POSTS } = process.env
   if (!TABLE_NAME_POSTS) {
-    return returnData(400, 'Table name is not defined!')
+    return returnData(400, 'Table name is not defined!', false)
   }
   const userId: string = event.requestContext.authorizer?.lambda.userId
   if (!event.body) {
-    return returnData(400, 'No body!')
+    return returnData(400, 'No body!', false)
   }
   const postData: InputPostIF = JSON.parse(event.body)
 

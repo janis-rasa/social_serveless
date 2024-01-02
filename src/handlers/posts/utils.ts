@@ -17,6 +17,6 @@ export const checkPostOwner = async (
 
   const post = (await queryItems(params)) as PostIF[]
   if (post[0].userId !== userId) {
-    throw returnData(400, 'This post does not belong to you!')
+    throw returnData(400, 'This post does not belong to you!', false)
   }
 }
